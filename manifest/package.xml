@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Caller</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>HandlerMethod__mdt.Active__c</members>
+        <members>HandlerMethod__mdt.CallingTrigger__c</members>
+        <members>HandlerMethod__mdt.ClassName__c</members>
+        <members>HandlerMethod__mdt.IndexOfExecution__c</members>
+        <members>HandlerMethod__mdt.MethodName__c</members>
+        <members>HandlerMethod__mdt.Moments__c</members>
+        <members>HandlerMethod__mdt.Operations__c</members>
+        <name>CustomField</name>
+    </types>
+    <types>
+        <members>HandlerMethod__mdt</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>HandlerMethod__mdt-Handler Method Layout</members></members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>HandlerMethod__mdt.Account</members></members>
+        <name>ListView</name>
+    </types>
+    <version>45.0</version>
+</Package>
