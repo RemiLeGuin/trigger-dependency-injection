@@ -1,10 +1,11 @@
 {
-  "orgName": "Trigger Dependencies",
-  "edition": "Developer",
-  "features": [],
-  "settings": {
-    "orgPreferenceSettings": {
-      "s1DesktopEnabled": true
+    "orgName": "Trigger Dependencies",
+    "edition": "Developer",
+    "features": [],
+    "settings": {
+        "orgPreferenceSettings": {
+            "s1DesktopEnabled": true
+        }
     }
-  }
 }
+  
