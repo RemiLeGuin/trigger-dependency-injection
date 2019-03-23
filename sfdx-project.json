@@ -1,11 +1,27 @@
 {
-	"packageDirectories": [
-		{
-			"path": "force-app",
-			"default": true
-		}
-	],
-	"namespace": "",
-	"sfdcLoginUrl": "https://login.salesforce.com",
-	"sourceApiVersion": "45.0"
+    "packageDirectories": [
+        {
+            "path": "trigger-dependencies",
+            "package": "Trigger Dependencies",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT",
+            "default": false
+        },
+        {
+            "path": "trigger-dependencies-test",
+            "package": "Trigger Dependencies Test",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "Trigger Dependencies",
+                    "versionNumber": "0.1.0.LATEST"
+                }
+            ]
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "45.0"
 }
