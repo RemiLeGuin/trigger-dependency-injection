@@ -3,8 +3,9 @@
 The [TriggerDependencies](https://github.com/RemiLeGuin/TriggerDependencies) repository contains a design pattern which breaks up the dependencies between triggers and classes called by the triggers (handlers, service managers...). It uses the [Callable interface](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_interface_System_Callable.htm) (Winter '19 release) to do so. Then, it allows to install and uninstall unlocked packages which use triggers as core code of an org without facing dependency issues.
 
 The [TriggerDependencies](https://github.com/RemiLeGuin/TriggerDependencies) repository contains 2 directories:
--   trigger-dependencies: the core code as the design pattern,
--   trigger-dependencies-test: a trigger handler class and its corresponding custom metadata to relate it to the desired trigger. It is an example to illustrate that this package may be installed and uninstalled independently from the core package.
+-   **trigger-dependencies**: the core code as the design pattern,
+-   **trigger-dependencies-test**: a trigger handler class and its corresponding custom metadata to relate it to the desired trigger. It is an example to illustrate that this package may be installed and uninstalled independently from the core package.
+
 The test directory will be the second unlocked package to be installed because it is dependent on the first one. This relation is set in the sfdx-project.json file.
 
 To know and understand the purpose of unlocked packages, please review the 'Unlocked Packages' topic of [the following Trailhead unit](https://trailhead.salesforce.com/content/learn/modules/package-development-readiness/assemble-an-effective-team).
