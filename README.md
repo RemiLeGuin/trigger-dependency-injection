@@ -12,11 +12,9 @@ To learn how to manipulate unlocked packages, please review [the following Trail
 
 ## Step 1: Install the TriggerDependencies unlocked package in an org
 
-Clone the [TriggerDependencies](https://github.com/RemiLeGuin/TriggerDependencies) repository to your local machine.
-
-Connect to a default org.
-
-Install the repo content as an unlocked package:
+-   Clone the [TriggerDependencies](https://github.com/RemiLeGuin/TriggerDependencies) repository to your local machine.
+-   Connect to a default org with Dev Hub and Unlocked Packages enabled.
+-   Install the repo content as an unlocked package:
 ```
 sfdx force:package:create --name "Trigger Dependencies" --description "Design pattern allowing to install and uninstall unlocked packages using triggers without dependencies." --packagetype Unlocked --path force-app --nonamespace --targetdevhubusername /*targeted org or username*/
 ```
@@ -29,7 +27,7 @@ sfdx force:package:install --wait 10 --publishwait 10 --package "Trigger Depende
 
 ## Step 2: Create a generic trigger to handle all actions on a SObject
 
-Create an 'Account' trigger and paste the following code in the default org:
+-   Create an 'Account' trigger and paste the following code in the default org:
 
 ```
 trigger Account on Account (before insert, before update, before delete,
@@ -42,11 +40,9 @@ trigger Account on Account (before insert, before update, before delete,
 
 ## Step 3: Install the unlocked package to test a new functionnality that use the defined previous trigger
 
-Clone the [TriggerDependenciesTest](https://github.com/RemiLeGuin/TriggerDependenciesTest) repository to your local machine
-
-Connect to the default org used before
-
-Install the repo content as an unlocked package:
+-   Clone the [TriggerDependenciesTest](https://github.com/RemiLeGuin/TriggerDependenciesTest) repository to your local machine.
+-   Connect to the default org used before.
+-   Install the repo content as an unlocked package:
 ```
 sfdx force:package:create --name "Trigger Dependencies Test" --description "Test the Trigger Dependencies unlocked package." --packagetype Unlocked --path force-app --nonamespace --targetdevhubusername /*targeted org or username*/
 ```
