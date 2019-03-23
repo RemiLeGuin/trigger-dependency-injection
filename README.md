@@ -6,7 +6,7 @@ The [TriggerDependencies](https://github.com/RemiLeGuin/TriggerDependencies) rep
 -   **trigger-dependencies**: the core code as the design pattern,
 -   **trigger-dependencies-test**: a trigger handler class and its corresponding custom metadata to relate it to the desired trigger. It is an example to illustrate that this package may be installed and uninstalled independently from the core package.
 
-The test directory will be the second unlocked package to be installed because it is dependent on the first one. This relation is set in the sfdx-project.json file.
+The test directory will be the second unlocked package to be installed because it is dependent on the first one. This relation is set later in the sfdx-project.json file.
 
 To know and understand the purpose of unlocked packages, please review the 'Unlocked Packages' topic of [the following Trailhead unit](https://trailhead.salesforce.com/content/learn/modules/package-development-readiness/assemble-an-effective-team).
 
@@ -34,9 +34,9 @@ sfdx force:package:install --wait 10 --publishwait 10 --package "Trigger Depende
 ```
 trigger Account on Account (before insert, before update, before delete,
                             after insert, after update, after delete, after undelete) {
-    
-    Caller.callHandlers('Account');
-    
+  
+  Caller.callHandlers('Account');
+  
 }
 ```
 
@@ -46,9 +46,33 @@ trigger Account on Account (before insert, before update, before delete,
 ```
 sfdx force:package:create --name "Trigger Dependencies Test" --description "Test the Trigger Dependencies unlocked package." --packagetype Unlocked --path trigger-dependencies-test --nonamespace --targetdevhubusername /*targeted org or username*/
 ```
+-   In sfdx-project.json, add the dependency of the second package to the first one:
+```
+{
+  "path": "trigger-dependencies-test",
+  "package": "Trigger Dependencies Test",
+  "versionName": "ver 0.1",
+  "versionNumber": "0.1.0.NEXT",
+  "default": false,
+  "dependencies": [
+    {
+      "package": "Trigger Dependencies",
+      "versionNumber": "0.1.0.LATEST"
+    }
+  ]
+}
+```
+Otherwise, you will not be able to install the second package containing a custom metadata which needs the custom metadata type in the first package.
+-   Then, proceed with versioning and installing the second package:
 ```
 sfdx force:package:version:create --package "Trigger Dependencies Test" --path trigger-dependencies-test --installationkey /*password*/ --wait 10 --targetdevhubusername /*targeted org or username*/
 ```
 ```
 sfdx force:package:install --wait 10 --publishwait 10 --package "Trigger Dependencies Test@0.1.0-1" --installationkey /*password*/ --noprompt --targetusername /*targeted org or username*/
 ```
+
+## Test it yourself!
+You will see both packages installed in the org in *Setup -> Installed Packages*. You can test the functionality that way:
+-   Create an Account with a Annual Revenue set to 200000. Its rating is automatically set to 'Cold'. That is the purpose of the functionality.
+-   Uninstall the second package: Trigger Dependencies Test in *Setup -> Installed Packages*.
+-   Create another Account with a Annual Revenue set to 200000. Its rating is not automatically set anymore. The functionality is properly removed (the APEX class and its corresponding custom metadata). Of course, the Account trigger remains in case of other use.
