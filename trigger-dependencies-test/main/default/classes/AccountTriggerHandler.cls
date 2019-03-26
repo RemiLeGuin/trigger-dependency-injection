@@ -7,8 +7,10 @@ public with sharing class AccountTriggerHandler implements Callable {
                     acc.Rating = 'Hot';
                 } else if (acc.AnnualRevenue > 500000) {
                     acc.Rating = 'Warm';
-                } else {
+                } else if (acc.AnnualRevenue > 0) {
                     acc.Rating = 'Cold';
+                } else {
+                    acc.Rating = null;
                 }
             }
         }
