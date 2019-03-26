@@ -1,8 +1,8 @@
 /**
- * @author Rémi Le Guin
- * @date 09/04/2019
- * @description Trigger handlers caller breaking up the dependencies between triggers and classes called by the triggers (handlers, service managers...). The handler classes shall implement the System.Callable interface provided by Salesforce.
- */
+* @author Rémi Le Guin
+* @date 09/04/2019
+* @description Trigger handlers caller breaking up the dependencies between triggers and classes called by the triggers (handlers, service managers...). The handler classes shall implement the System.Callable interface provided by Salesforce.
+*/
 public with sharing class Caller {
 
     // Stores the handler classes which already may have been instanciated.
@@ -16,9 +16,9 @@ public with sharing class Caller {
     };
     
     /**
-	 * @description Get the custom metadata containing information on the handlers and execute them.
-	 * @param callingTrigger Name of the trigger calling the method.
-	 */
+    * @description Get the custom metadata containing information on the handlers and execute them.
+    * @param callingTrigger Name of the trigger calling the method.
+    */
     public static void callHandlers(String callingTrigger) {
         List<HandlerMethod__mdt> methods = [SELECT DeveloperName, ClassName__c, MethodName__c, Moments__c, Operations__c
                                             FROM HandlerMethod__mdt
@@ -34,10 +34,10 @@ public with sharing class Caller {
     }
 
     /**
-	 * @description Instanciates and stores a handler class or get it from the Map if it has previously been.
-	 * @param method Custom metadata containing information about the method to execute.
-     * @return Instanciated class implementing Callable interface.
-	 */
+    * @description Instanciates and stores a handler class or get it from the Map if it has previously been.
+    * @param method Custom metadata containing information about the method to execute.
+    * @return Instanciated class implementing Callable interface.
+    */
     private static Callable instanciateHandler(HandlerMethod__mdt method) {
         if (instanciatedClasses.isEmpty() || instanciatedClasses.get(method.ClassName__c) == null) {
             Callable callableClass = (Callable)Type.forName(method.ClassName__c).newInstance();
@@ -52,11 +52,11 @@ public with sharing class Caller {
     }
 
     /**
-	 * @description Calls the handler method to be executed according the Trigger context.
-	 * @param method Custom metadata containing information about the method to execute.
-     * @param operations Operation types (insert, update...) for which the method has to execute.
-     * @param callableClass Class implementing the Callable interface that has been instanciated beforehand.
-	 */
+    * @description Calls the handler method to be executed according the Trigger context.
+    * @param method Custom metadata containing information about the method to execute.
+    * @param operations Operation types (insert, update...) for which the method has to execute.
+    * @param callableClass Class implementing the Callable interface that has been instanciated beforehand.
+    */
     private static void callHandler(HandlerMethod__mdt method, List<String> operations, Callable callableClass) {
         // The System.debug operations use the call method from the Callable interface implemented in the handler class.
         // The call method dynamically calls the informed method in the handler and returns back a state message.
