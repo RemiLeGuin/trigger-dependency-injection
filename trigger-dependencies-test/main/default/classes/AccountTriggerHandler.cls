@@ -5,11 +5,14 @@ public with sharing class AccountTriggerHandler implements Callable {
             if (oldRecords == null || acc.AnnualRevenue != oldRecords.get(acc.Id).AnnualRevenue) {
                 if (acc.AnnualRevenue > 1000000) {
                     acc.Rating = 'Hot';
-                } else if (acc.AnnualRevenue > 500000) {
+                }
+                else if (acc.AnnualRevenue > 500000) {
                     acc.Rating = 'Warm';
-                } else if (acc.AnnualRevenue > 0) {
+                }
+                else if (acc.AnnualRevenue > 0) {
                     acc.Rating = 'Cold';
-                } else {
+                }
+                else {
                     acc.Rating = null;
                 }
             }
@@ -17,12 +20,13 @@ public with sharing class AccountTriggerHandler implements Callable {
         return 'Method executed: updateRating';
     }
     
-    public Object call(String action, Map<String, Object> args) {
+    public Object call(String action, Map<String, Object> arguments) {
         switch on action {
             when 'updateRating' {
-                return this.updateRating((List<Account>)args.get('records'),
-                                         (Map<Id, Account>)args.get('oldRecords'));
-            } when else {
+                return this.updateRating((List<Account>)arguments.get('records'),
+                                         (Map<Id, Account>)arguments.get('oldRecords'));
+            }
+            when else {
                 throw new ExtensionMalformedCallException('Method not implemented');
             }
         }
