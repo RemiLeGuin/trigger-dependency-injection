@@ -3,7 +3,7 @@
 * @date 09/04/2019
 * @description Trigger handlers caller breaking up the dependencies between triggers and classes called by the triggers (handlers, service managers...). The handler classes shall implement the System.Callable interface provided by Salesforce.
 */
-public with sharing class Caller {
+public without sharing class Caller {
 
     // Stores the handler classes which already may have been instanciated.
     private static Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
