@@ -20,7 +20,7 @@ global without sharing class Caller {
     * @param callingTrigger Name of the trigger calling the method.
     */
     global static void callHandlers(String callingTrigger) {
-        List<HandlerMethod__mdt> methods = [SELECT DeveloperName, ClassName__c, MethodName__c, Moments__c, Operations__c
+        List<HandlerMethod__mdt> methods = [SELECT ClassName__c, MethodName__c, Moments__c, Operations__c
                                             FROM HandlerMethod__mdt
                                             WHERE Active__c = true AND CallingTrigger__c = :callingTrigger
                                             ORDER BY IndexOfExecution__c ASC];
