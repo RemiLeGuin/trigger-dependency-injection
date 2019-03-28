@@ -1,8 +1,12 @@
 {
     "packageDirectories": [
         {
-            "path": "trigger-dependencies",
+            "path": "trigger-dependency-injection",
             "default": true
+        },
+        {
+            "path": "trigger-dependency-injection-test",
+            "default": false
         }
     ],
     "namespace": "",
