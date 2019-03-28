@@ -1,6 +1,6 @@
-public with sharing class AccountTriggerHandler implements Callable {
+public with sharing class AccountRatingUpdate implements Callable {
     
-    private String updateRating(List<Account> records, Map<Id, Account> oldRecords) {
+    public String updateAccountRating(List<Account> records, Map<Id, Account> oldRecords) {
         for (Account acc : records) {
             if (oldRecords == null || acc.AnnualRevenue != oldRecords.get(acc.Id).AnnualRevenue) {
                 if (acc.AnnualRevenue > 1000000) {
@@ -17,14 +17,14 @@ public with sharing class AccountTriggerHandler implements Callable {
                 }
             }
         }
-        return 'Method executed: updateRating';
+        return 'Method executed: updateAccountRating';
     }
-    
+
     public Object call(String action, Map<String, Object> arguments) {
         switch on action {
-            when 'updateRating' {
-                return this.updateRating((List<Account>)arguments.get('records'),
-                                         (Map<Id, Account>)arguments.get('oldRecords'));
+            when 'updateAccountRating' {
+                return this.updateAccountRating((List<Account>)arguments.get('records'),
+                                                (Map<Id, Account>)arguments.get('oldRecords'));
             }
             when else {
                 throw new ExtensionMalformedCallException('Method not implemented');

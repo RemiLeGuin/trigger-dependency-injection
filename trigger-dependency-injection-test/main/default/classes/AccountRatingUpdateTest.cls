@@ -1,5 +1,5 @@
 @IsTest
-private class AccountTriggerHandlerTest {
+private class AccountRatingUpdateTest {
 
     @TestSetup
     private static void accountDataSetup() {
