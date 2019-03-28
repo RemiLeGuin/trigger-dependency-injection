@@ -1,4 +1,4 @@
-public with sharing class ParentAccountAddressUpdate implements Queueable {
+public with sharing class ParentAccountAddressUpdate implements Callable, Queueable {
 
     private List<Account> records;
     private Map<Id, Account> oldRecords;
@@ -10,7 +10,7 @@ public with sharing class ParentAccountAddressUpdate implements Queueable {
 	}
 
     public static String updateParentAccountAddressesQueueable(List<Account> records, Map<Id, Account> oldRecords) {
-		System.enqueueJob(new AccountAddressUpdate(records, oldRecords));
+		System.enqueueJob(new ParentAccountAddressUpdate(records, oldRecords));
         return 'Job enqueued: updateParentAccountAddressesQueueable';
 	}
 
