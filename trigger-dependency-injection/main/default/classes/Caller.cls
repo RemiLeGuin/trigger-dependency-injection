@@ -10,6 +10,7 @@ global without sharing class Caller {
     // The combination Trigger.new / Trigger oldMap works in most trigger cases.
     // In case of before insert operation, Trigger.newMap will not work as the records have no ID yet.
     // In case of insert operation, Trigger.oldMap is automatically set to null.
+    // In case of delete operation, Trigger.new is automatically set to null.
     private static Map<String, Object> parameters = new Map<String, Object> {
         'records' => Trigger.new,
         'oldRecords' => Trigger.oldMap

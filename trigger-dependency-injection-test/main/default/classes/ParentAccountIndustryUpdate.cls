@@ -20,14 +20,14 @@ public with sharing class ParentAccountIndustryUpdate implements Callable, Queue
     }
 
     public static String updateParentAccountIndustry(List<Account> records, Map<Id, Account> oldRecords) {
-        Map<Id, Account> parentAccounts = getParentAccounts(records, oldRecords);
+        Map<Id, Account> parentAccounts = getParentAccounts(records);
         List<Account> parentAccountsToUpdate = new List<Account> ();
         parentAccountsToUpdate.addAll(updateIndustryFromChild(records, oldRecords, parentAccounts));
         update parentAccountsToUpdate;
         return 'Method executed: updateParentAccountIndustry';
     }
 
-    private static Map<Id, Account> getParentAccounts(List<Account> records, Map<Id, Account> oldRecords) {
+    private static Map<Id, Account> getParentAccounts(List<Account> records) {
         Set<String> parentAccountsId = new Set<String> ();
         for (Account acc : records) {
             if (acc.ParentId != null) {
