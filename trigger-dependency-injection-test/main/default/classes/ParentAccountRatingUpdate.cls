@@ -32,12 +32,7 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
             }
         }
         Map<Id, Account> parentAccounts = new Map<Id, Account>([SELECT Id, Rating FROM Account WHERE Id IN :parentAccountsId]);
-        if (parentAccounts.isEmpty()) {
-            return null;
-        }
-        else {
-            return parentAccounts;
-        }
+        return parentAccounts.isEmpty() ? null : parentAccounts;
     }
 
     private static Map<Id, Account> setRatingFromChild(List<Account> records, Map<Id, Account> oldRecords, Map<Id, Account> parentAccounts) {
@@ -51,12 +46,7 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
                 parentAccountsToUpdate.put(acc.ParentId, parentAccount);
             }
         }
-        if (parentAccountsToUpdate.isEmpty()) {
-            return null;
-        }
-        else {
-            return parentAccountsToUpdate;
-        }
+        return parentAccountsToUpdate.isEmpty() ? null : parentAccountsToUpdate;
     }
 
     public Object call(String action, Map<String, Object> arguments) {
