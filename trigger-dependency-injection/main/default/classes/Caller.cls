@@ -5,17 +5,6 @@
 */
 global without sharing class Caller {
 
-    // Stores the handler classes which already may have been instanciated.
-    private static Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
-    // The combination Trigger.new / Trigger oldMap works in most trigger cases.
-    // In case of before insert operation, Trigger.newMap will not work as the records have no ID yet.
-    // In case of insert operation, Trigger.oldMap is automatically set to null.
-    // In case of delete operation, Trigger.new is automatically set to null.
-    private static Map<String, Object> parameters = new Map<String, Object> {
-        'records' => Trigger.new,
-        'oldRecords' => Trigger.oldMap
-    };
-    
     /**
     * @description Get the custom metadata containing information on the handlers and execute them.
     * @param callingTrigger Name of the trigger calling the method.
@@ -25,12 +14,22 @@ global without sharing class Caller {
                                             FROM HandlerMethod__mdt
                                             WHERE Active__c = true AND CallingTrigger__c = :callingTrigger
                                             ORDER BY IndexOfExecution__c ASC];
+        // Stores the handler classes which already may have been instanciated.
+        Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
+        // The combination Trigger.new / Trigger oldMap works in most trigger cases.
+        // In case of before insert operation, Trigger.newMap will not work as the records have no ID yet.
+        // In case of insert operation, Trigger.oldMap is automatically set to null.
+        // In case of delete operation, Trigger.new is automatically set to null.
+        Map<String, Object> parameters = new Map<String, Object> {
+            'records' => Trigger.new,
+            'oldRecords' => Trigger.oldMap
+        };
         for (HandlerMethod__mdt method : methods) {
-            Callable callableClass = instanciateHandler(method);
+            Callable callableClass = instanciateHandler(method, instanciatedClasses);
             // Unlike the moments (before and after), some operations have similar designations (delete and undelete).
             // Then, we cannot use contains in a String. We shall compose a List of String.
             List<String> operations = method.Operations__c.toLowerCase().deleteWhitespace().split(',');
-            callHandler(method, operations, callableClass);
+            callHandler(method, operations, callableClass, parameters);
         }
     }
 
@@ -39,7 +38,7 @@ global without sharing class Caller {
     * @param method Custom metadata containing information about the method to execute.
     * @return Instanciated class implementing Callable interface.
     */
-    private static Callable instanciateHandler(HandlerMethod__mdt method) {
+    private static Callable instanciateHandler(HandlerMethod__mdt method, Map<String, Callable> instanciatedClasses) {
         if (instanciatedClasses.isEmpty() || instanciatedClasses.get(method.ClassName__c) == null) {
             Callable callableClass = (Callable)Type.forName(method.ClassName__c).newInstance();
             // Stores the instanciated handler class in case it is called again later.
@@ -58,7 +57,7 @@ global without sharing class Caller {
     * @param operations Operation types (insert, update...) for which the method has to execute.
     * @param callableClass Class implementing the Callable interface that has been instanciated beforehand.
     */
-    private static void callHandler(HandlerMethod__mdt method, List<String> operations, Callable callableClass) {
+    private static void callHandler(HandlerMethod__mdt method, List<String> operations, Callable callableClass, Map<String, Object> parameters) {
         // The System.debug operations use the call method from the Callable interface implemented in the handler class.
         // The call method dynamically calls the informed method in the handler and returns back a state message.
         if (Trigger.isBefore && method.Moments__c.toLowerCase().deleteWhitespace().contains('before')) {
