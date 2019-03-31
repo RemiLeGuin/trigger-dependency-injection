@@ -12,7 +12,7 @@ private class AccountRatingUpdateTest {
         AccountTestDataFactory.createAccountsWithAnnualRevenue(numberOfAccounts);
         Test.stopTest();
 
-        List<Account> accounts = accounts = [SELECT AnnualRevenue, Rating FROM Account ORDER BY Name ASC];
+        List<Account> accounts = [SELECT AnnualRevenue, Rating FROM Account ORDER BY Name ASC];
         System.assertEquals(null, accounts[0].AnnualRevenue, 'No Account were created or Annual Revenue set while it shall not');
         System.assertEquals(null, accounts[0].Rating, 'Account Rating set while it shall not');
         System.assertEquals(200000, accounts[firstQuarter].AnnualRevenue, 'No Account were created or wrong Annual Revenue');
