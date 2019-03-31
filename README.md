@@ -72,6 +72,13 @@ sfdx force:package:install --wait 10 --publishwait 10 --package "Trigger Depende
 ```
 
 ## Test it yourself!
+> IMPORTANT: To test the functionality with a user other than 'System Administrator', do not forget to assign the permission sets to the desired users from other profiles with the following command lines after the packages installation:
+```
+sfdx force:user:permset:assign --permsetname TriggerDependencyInjection --onbehalfof /*username1@my.org, username2@my.org, username3@my.org ...*/
+```
+```
+sfdx force:user:permset:assign --permsetname ManageAccountRating --onbehalfof /*username1@my.org, username2@my.org, username3@my.org ...*/
+```
 You will see both packages installed in the org in *Setup -> Installed Packages*. You can test the functionality that way:
 -   Create an Account with a Annual Revenue set to 200000. Its rating is automatically set to 'Cold'. That is the purpose of the functionality.
 -   Uninstall the second package: Trigger Dependency Injection (TDI) Test in *Setup -> Installed Packages*.
