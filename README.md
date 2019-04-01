@@ -82,4 +82,4 @@ sfdx force:user:permset:assign --permsetname ManageAccountRating --onbehalfof /*
 You will see both packages installed in the org in *Setup -> Installed Packages*. You can test the functionality that way:
 -   Create an Account with a Annual Revenue set to 200000. Its rating is automatically set to 'Cold'. That is the purpose of the functionality.
 -   Uninstall the second package: Trigger Dependency Injection (TDI) Test in *Setup -> Installed Packages*.
--   Create another Account with a Annual Revenue set to 200000. Its rating is not automatically set anymore. The functionality is properly removed (the APEX class and its corresponding custom metadata). Of course, the Account trigger remains in case of other use cases.
+-   Create another Account with a Annual Revenue set to 200000. Its rating is not automatically set anymore. The functionality is properly removed (the APEX class and its corresponding custom metadata). Of course, the Account trigger remains in case of other use cases but you are free to include it the first or the second package.
