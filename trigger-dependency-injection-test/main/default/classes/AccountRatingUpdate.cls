@@ -1,8 +1,8 @@
 public with sharing class AccountRatingUpdate implements Callable {
     
-    public String updateAccountRating(List<Account> records, Map<Id, Account> oldRecords) {
-        for (Account acc : records) {
-            if (oldRecords == null || acc.AnnualRevenue != oldRecords.get(acc.Id).AnnualRevenue) {
+    public String updateAccountRating(List<Account> accounts, Map<Id, Account> oldAccounts) {
+        for (Account acc : accounts) {
+            if (oldAccounts == null || acc.AnnualRevenue != oldAccounts.get(acc.Id).AnnualRevenue) {
                 if (acc.AnnualRevenue > 1000000) {
                     acc.Rating = 'Hot';
                 }
