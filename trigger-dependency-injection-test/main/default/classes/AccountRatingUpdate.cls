@@ -17,7 +17,7 @@ public with sharing class AccountRatingUpdate implements Callable {
                 }
             }
         }
-        return 'Method executed: updateAccountRating';
+        return 'Method executed: AccountRatingUpdate.updateAccountRating';
     }
 
     public Object call(String action, Map<String, Object> arguments) {

@@ -16,15 +16,15 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
         Map<Id, Account> parentAccounts = getParentAccounts(accounts);
         Map<Id, Account> parentAccountsToUpdate = setRatingFromChild(accounts, oldAccounts, parentAccounts);
         if (parentAccountsToUpdate == null || parentAccountsToUpdate.isEmpty()) {
-            return 'Method executed: updateParentAccountRating, no job enqueued as there is no parent account to update.';
+            return 'Method executed: ParentAccountRatingUpdate.updateParentAccountRating, no job enqueued as there is no parent account to update.';
         }
         else if (Test.isRunningTest()) {
             update parentAccountsToUpdate.values();
-            return 'Method executed: updateParentAccountRating, no job enqueued as this is a test class.';
+            return 'Method executed: ParentAccountRatingUpdate.updateParentAccountRating, no job enqueued as this is a test class.';
         }
         else {
             ID jobID = System.enqueueJob(new ParentAccountRatingUpdate(parentAccountsToUpdate.values()));
-            return 'Job enqueued: updateParentAccountRatingQueueable with ID: ' + jobID;
+            return 'Job enqueued: ParentAccountRatingUpdate.updateParentAccountRatingQueueable with ID: ' + jobID;
         }
     }
 
