@@ -3,7 +3,7 @@
     <fullName>Moments__c</fullName>
     <externalId>false</externalId>
     <fieldManageability>DeveloperControlled</fieldManageability>
-    <inlineHelpText>Enter the moment the method shall execute (comma-separated): before, update</inlineHelpText>
+    <inlineHelpText>Enter the moment the method shall execute (comma-separated): before, after.</inlineHelpText>
     <label>Moments</label>
     <length>20</length>
     <required>true</required>
