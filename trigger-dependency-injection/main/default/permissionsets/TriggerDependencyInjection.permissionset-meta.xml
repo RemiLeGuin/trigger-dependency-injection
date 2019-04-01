@@ -4,6 +4,7 @@
         <apexClass>Caller</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <description>Necessary for users who wish to benefits from functionalities using the TDI.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Trigger Dependency Injection (TDI)</label>
 </PermissionSet>

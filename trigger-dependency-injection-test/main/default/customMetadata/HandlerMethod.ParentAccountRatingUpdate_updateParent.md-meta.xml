@@ -15,6 +15,10 @@
         <value xsi:type="xsd:string">ParentAccountRatingUpdate</value>
     </values>
     <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">As a standard user, when I insert a child Account with a Rating or when a child Account Rating is updated and the parent Account Rating is null, the parent Account Rating is set the same as the child Account.</value>
+    </values>
+    <values>
         <field>IndexOfExecution__c</field>
         <value xsi:type="xsd:double">2.0</value>
     </values>

@@ -15,6 +15,10 @@
         <value xsi:type="xsd:string">AccountDelete</value>
     </values>
     <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">As a standard user, I cannot delete an Account with a Rating &#39;Hot&#39;.</value>
+    </values>
+    <values>
         <field>IndexOfExecution__c</field>
         <value xsi:type="xsd:double">3.0</value>
     </values>
