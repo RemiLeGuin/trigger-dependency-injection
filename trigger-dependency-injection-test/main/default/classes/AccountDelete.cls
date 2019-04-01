@@ -1,9 +1,9 @@
 public with sharing class AccountDelete implements Callable {
 
     public static String checkAccountRating(List<Account> accounts, Map<Id, Account> oldAccounts) {
-        for (Account acc : accounts) {
+        for (Account acc : oldAccounts.values()) {
             if (acc.Rating == 'Hot') {
-                acc.addError('No');
+                acc.addError(Label.ErrorOnDeleteRating);
             }
         }
         return 'Method executed: AccountDelete.checkAccountRating';
@@ -22,5 +22,5 @@ public with sharing class AccountDelete implements Callable {
     }
     
     public class ExtensionMalformedCallException extends Exception {}
-    
+
 }
