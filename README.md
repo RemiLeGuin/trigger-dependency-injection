@@ -1,9 +1,9 @@
 # Trigger Dependency Injection (TDI)
 
-The [TriggerDependencyInjection](https://github.com/RemiLeGuin/TriggerDependencyInjection) repository introduces a design pattern for Salesforce which breaks up the dependencies between APEX triggers and classes called by the triggers (handlers, service managers...). It uses the [Callable interface](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_interface_System_Callable.htm) (Winter '19 release) to do so. Then, it allows to install and uninstall unlocked packages which use triggers as core code of an org without facing dependency issues.
+The [TriggerDependencyInjection](https://github.com/RemiLeGuin/TriggerDependencyInjection) repository introduces a framework for Salesforce which breaks up the dependencies between APEX triggers and classes called by the triggers (handlers, service managers...). It uses the [Callable interface](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_interface_System_Callable.htm) (Winter '19 release) to do so. Then, it allows to install and uninstall unlocked packages which use triggers as core code of an org without facing dependency issues.
 
 The [TriggerDependencyInjection](https://github.com/RemiLeGuin/TriggerDependencyInjection) repository contains 2 directories:
--   **trigger-dependency-injection**: the core code illustrating the design pattern,
+-   **trigger-dependency-injection**: the framework,
 -   **trigger-dependency-injection-test**: a trigger handler class and its corresponding custom metadata to relate it to the desired trigger. It is an example to illustrate that this package may be installed and uninstalled independently from the core package.
 
 The test directory will be the second unlocked package to be installed because it depends on the first one. This relation is set later in the sfdx-project.json file.
@@ -18,7 +18,7 @@ To learn how to manipulate unlocked packages, please review [the following Trail
 -   Connect to a default org (Sandbox, Trailhead Playground, Scratch Org...) with Dev Hub and Unlocked Packages enabled.
 -   Install the trigger-dependency-injection directory as an unlocked package:
 ```
-sfdx force:package:create --name "Trigger Dependency Injection (TDI)" --description "Design pattern allowing to install and uninstall unlocked packages using triggers without dependencies." --packagetype Unlocked --path trigger-dependency-injection --nonamespace --targetdevhubusername /*targeted org or username*/
+sfdx force:package:create --name "Trigger Dependency Injection (TDI)" --description "Framework injecting dependencies between Apex Triggers and handler classes they call at runtime." --packagetype Unlocked --path trigger-dependency-injection --nonamespace --targetdevhubusername /*targeted org or username*/
 ```
 ```
 sfdx force:package:version:create --package "Trigger Dependency Injection (TDI)" --path trigger-dependency-injection --installationkey /*password*/ --wait 10 --targetdevhubusername /*targeted org or username*/
