@@ -3,7 +3,7 @@
 The [TriggerDependencyInjection](https://github.com/RemiLeGuin/TriggerDependencyInjection) repository introduces a framework for Salesforce which breaks up the dependencies between APEX triggers and classes called by the triggers (handlers, service managers...). It uses the [Callable interface](https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_interface_System_Callable.htm) (Winter '19 release) to do so. Then, it allows to install and uninstall unlocked packages which use triggers as core code of an org without facing dependency issues.
 
 The [TriggerDependencyInjection](https://github.com/RemiLeGuin/TriggerDependencyInjection) repository contains 2 directories:
--   **trigger-dependency-injection**: the framework,
+-   **trigger-dependency-injection**: the framework itself as the core code,
 -   **trigger-dependency-injection-test**: a trigger handler class and its corresponding custom metadata to relate it to the desired trigger. It is an example to illustrate that this package may be installed and uninstalled independently from the core package.
 
 The test directory will be the second unlocked package to be installed because it depends on the first one. This relation is set later in the sfdx-project.json file.
