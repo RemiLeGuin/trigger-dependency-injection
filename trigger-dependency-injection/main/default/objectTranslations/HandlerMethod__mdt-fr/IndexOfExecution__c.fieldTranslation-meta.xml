@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <help>Indiquez un chiffre définissant l&#39;ordre d&#39;exécution de la méthode. Une méthode avec un index 1 sera exécutée avant une méthode ayant un index 2.</help>
+    <label>Index d&#39;exécution</label>
+    <name>IndexOfExecution__c</name>
+</CustomFieldTranslation>
