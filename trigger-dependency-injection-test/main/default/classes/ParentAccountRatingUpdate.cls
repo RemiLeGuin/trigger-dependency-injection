@@ -13,8 +13,8 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
     }
 
     public static String updateParentAccountRating(List<Account> accounts, Map<Id, Account> oldAccounts) {
-        Map<Id, Account> parentAccounts = getParentAccounts(accounts);
-        Map<Id, Account> parentAccountsToUpdate = setRatingFromChild(accounts, oldAccounts, parentAccounts);
+        Map<Id, Account> parentAccountsWithRatingNull = getParentAccountsWithRatingNull(accounts);
+        Map<Id, Account> parentAccountsToUpdate = setRatingFromChild(accounts, oldAccounts, parentAccountsWithRatingNull);
         if (parentAccountsToUpdate == null || parentAccountsToUpdate.isEmpty()) {
             return 'Method executed: ParentAccountRatingUpdate.updateParentAccountRating, no job enqueued as there is no parent account to update.';
         }
@@ -28,26 +28,31 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
         }
     }
 
-    private static Map<Id, Account> getParentAccounts(List<Account> accounts) {
+    private static Map<Id, Account> getParentAccountsWithRatingNull(List<Account> accounts) {
         Set<String> parentAccountsId = new Set<String> ();
         for (Account acc : accounts) {
             if (acc.ParentId != null) {
                 parentAccountsId.add(acc.ParentId);
             }
         }
-        Map<Id, Account> parentAccounts = new Map<Id, Account>([SELECT Id, Rating FROM Account WHERE Id IN :parentAccountsId]);
+        Map<Id, Account> parentAccounts = new Map<Id, Account>([SELECT Id, Rating
+                                                                FROM Account
+                                                                WHERE Id IN :parentAccountsId AND Rating = null]);
         return parentAccounts.isEmpty() ? null : parentAccounts;
     }
 
-    private static Map<Id, Account> setRatingFromChild(List<Account> accounts, Map<Id, Account> oldAccounts, Map<Id, Account> parentAccounts) {
+    private static Map<Id, Account> setRatingFromChild(List<Account> accounts,
+                                                       Map<Id, Account> oldAccounts,
+                                                       Map<Id, Account> parentAccountsWithRatingNull) {
         Map<Id, Account> parentAccountsToUpdate = new Map<Id, Account> ();
-        for (Account acc : accounts) {
-            if ((acc.ParentId != null && parentAccounts != null && !parentAccounts.isEmpty()
-                && parentAccounts.get(acc.ParentId) != null && parentAccounts.get(acc.ParentId).Rating == null)
-                && (oldAccounts == null || acc.Rating != oldAccounts.get(acc.Id).Rating)) {
-                Account parentAccount = parentAccounts.get(acc.ParentId);
-                parentAccount.Rating = acc.Rating;
-                parentAccountsToUpdate.put(acc.ParentId, parentAccount);
+        if (parentAccountsWithRatingNull != null && !parentAccountsWithRatingNull.isEmpty()) {
+            for (Account acc : accounts) {
+                if ((acc.ParentId != null && parentAccountsWithRatingNull.get(acc.ParentId) != null)
+                    && (oldAccounts == null || acc.Rating != oldAccounts.get(acc.Id).Rating)) {
+                    Account parentAccountWithRatingNull = parentAccountsWithRatingNull.get(acc.ParentId);
+                    parentAccountWithRatingNull.Rating = acc.Rating;
+                    parentAccountsToUpdate.put(acc.ParentId, parentAccountWithRatingNull);
+                }
             }
         }
         return parentAccountsToUpdate.isEmpty() ? null : parentAccountsToUpdate;
