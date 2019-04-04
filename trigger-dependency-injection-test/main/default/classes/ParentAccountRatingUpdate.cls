@@ -18,7 +18,7 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
         if (parentAccountsToUpdate == null || parentAccountsToUpdate.isEmpty()) {
             return 'Method executed: ParentAccountRatingUpdate.updateParentAccountRating, no job enqueued as there is no parent account to update.';
         }
-        else if (Test.isRunningTest()) {
+        else if (Test.isRunningTest() && parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
             update parentAccountsToUpdate.values();
             return 'Method executed: ParentAccountRatingUpdate.updateParentAccountRating, no job enqueued as this is a test class.';
         }
