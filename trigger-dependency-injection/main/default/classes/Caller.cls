@@ -10,27 +10,62 @@ global without sharing class Caller {
     * @param callingTrigger Name of the trigger calling the method.
     */
     global static void callHandlers(String callingTrigger) {
-        List<HandlerMethod__mdt> methods = [SELECT ClassName__c, MethodName__c, Moments__c, Operations__c
+        List<HandlerMethod__mdt> methods = [SELECT ClassName__c, MethodName__c, Moment__c, Operation__c, Parameter1__c, Parameter2__c
                                             FROM HandlerMethod__mdt
                                             WHERE Active__c = true AND CallingTrigger__c = :callingTrigger
                                             ORDER BY IndexOfExecution__c ASC];
         // Stores the handler classes which already may have been instanciated.
         Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
-        // The combination Trigger.new / Trigger oldMap works in most trigger cases.
-        // In case of before insert operation, Trigger.newMap will not work as the records have no ID yet.
-        // In case of insert operation, Trigger.oldMap is automatically set to null.
-        // In case of delete operation, Trigger.new is automatically set to null.
-        Map<String, Object> parameters = new Map<String, Object> {
-            'records' => Trigger.new,
-            'oldRecords' => Trigger.oldMap
-        };
         for (HandlerMethod__mdt method : methods) {
             Callable callableClass = instanciateHandler(method, instanciatedClasses);
-            // Unlike the moments (before and after), some operations have similar designations (delete and undelete).
-            // Then, we cannot use contains in a String. We shall compose a List of String.
-            List<String> operations = method.Operations__c.toLowerCase().deleteWhitespace().split(',');
-            callHandler(method, operations, callableClass, parameters);
+            Map<String, Object> parameters = setParameters(method);
+            callHandler(method, callableClass, parameters);
         }
+    }
+
+    private static Map<String, Object> setParameters(HandlerMethod__mdt method) {
+        Map<String, Object> parameters = new Map<String, Object> ();
+        switch on method.Parameter1__c {
+            when 'null' {
+                parameters.put('parameter1', null);
+            }
+            when 'Trigger.new' {
+                parameters.put('parameter1', Trigger.new);
+            }
+            when 'Trigger.newMap' {
+                parameters.put('parameter1', Trigger.newMap);
+            }
+            when 'Trigger.old' {
+                parameters.put('parameter1', Trigger.old);
+            }
+            when 'Trigger.oldMap' {
+                parameters.put('parameter1', Trigger.oldMap);
+            }
+            when else {
+                System.debug('No first parameter.');
+            }
+        }
+        switch on method.Parameter2__c {
+            when 'null' {
+                parameters.put('parameter2', null);
+            }
+            when 'Trigger.new' {
+                parameters.put('parameter2', Trigger.new);
+            }
+            when 'Trigger.newMap' {
+                parameters.put('parameter2', Trigger.newMap);
+            }
+            when 'Trigger.old' {
+                parameters.put('parameter2', Trigger.old);
+            }
+            when 'Trigger.oldMap' {
+                parameters.put('parameter2', Trigger.oldMap);
+            }
+            when else {
+                System.debug('No second parameter.');
+            }
+        }
+        return parameters;
     }
 
     /**
@@ -54,34 +89,34 @@ global without sharing class Caller {
     /**
     * @description Calls the handler method to be executed according the Trigger context.
     * @param method Custom metadata containing information about the method to execute.
-    * @param operations Operation types (insert, update...) for which the method has to execute.
     * @param callableClass Class implementing the Callable interface that has been instanciated beforehand.
+    * @param parameters Inputs to pass to the method.
     */
-    private static void callHandler(HandlerMethod__mdt method, List<String> operations, Callable callableClass, Map<String, Object> parameters) {
+    private static void callHandler(HandlerMethod__mdt method, Callable callableClass, Map<String, Object> parameters) {
         // The System.debug operations use the call method from the Callable interface implemented in the handler class.
         // The call method dynamically calls the informed method in the handler and returns back a state message.
-        if (Trigger.isBefore && method.Moments__c.toLowerCase().deleteWhitespace().contains('before')) {
-            if (Trigger.isInsert && operations.contains('insert')) {
+        if (Trigger.isBefore && method.Moment__c == 'before') {
+            if (Trigger.isInsert && method.Operation__c == 'insert') {
                 System.debug(callableClass.call(method.MethodName__c, parameters));
             }
-            if (Trigger.isUpdate && operations.contains('update')) {
+            if (Trigger.isUpdate && method.Operation__c == 'update') {
                 System.debug(callableClass.call(method.MethodName__c, parameters));
             }
-            if (Trigger.isDelete && operations.contains('delete')) {
+            if (Trigger.isDelete && method.Operation__c == 'delete') {
                 System.debug(callableClass.call(method.MethodName__c, parameters));
             }
         }
-        if (Trigger.isAfter && method.Moments__c.toLowerCase().deleteWhitespace().contains('after')) {
-            if (Trigger.isInsert && operations.contains('insert')) {
+        if (Trigger.isAfter && method.Moment__c == 'after') {
+            if (Trigger.isInsert && method.Operation__c == 'insert') {
                 System.debug(callableClass.call(method.MethodName__c, parameters));
             }
-            if (Trigger.isUpdate && operations.contains('update')) {
+            if (Trigger.isUpdate && method.Operation__c == 'update') {
                 System.debug(callableClass.call(method.MethodName__c, parameters));
             }
-            if (Trigger.isDelete && operations.contains('delete')) {
+            if (Trigger.isDelete && method.Operation__c == 'delete') {
                 System.debug(callableClass.call(method.MethodName__c, parameters));
             }
-            if (Trigger.isUndelete && operations.contains('undelete')) {
+            if (Trigger.isUndelete && method.Operation__c == 'undelete') {
                 System.debug(callableClass.call(method.MethodName__c, parameters));
             }
         }

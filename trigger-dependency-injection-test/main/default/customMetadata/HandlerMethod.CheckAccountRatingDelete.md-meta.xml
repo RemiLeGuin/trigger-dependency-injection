@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>CheckAccountRatingDelete</label>
+    <protected>false</protected>
+    <values>
+        <field>Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>CallingTrigger__c</field>
+        <value xsi:type="xsd:string">Account</value>
+    </values>
+    <values>
+        <field>ClassName__c</field>
+        <value xsi:type="xsd:string">AccountDelete</value>
+    </values>
+    <values>
+        <field>Description__c</field>
+        <value xsi:type="xsd:string">As a standard user, I cannot delete an Account with a Rating &#39;Hot&#39;.</value>
+    </values>
+    <values>
+        <field>IndexOfExecution__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
+        <field>MethodName__c</field>
+        <value xsi:type="xsd:string">checkAccountRating</value>
+    </values>
+    <values>
+        <field>Moment__c</field>
+        <value xsi:type="xsd:string">before</value>
+    </values>
+    <values>
+        <field>Operation__c</field>
+        <value xsi:type="xsd:string">delete</value>
+    </values>
+    <values>
+        <field>Parameter1__c</field>
+        <value xsi:type="xsd:string">Trigger.old</value>
+    </values>
+    <values>
+        <field>Parameter2__c</field>
+        <value xsi:type="xsd:string">None</value>
+    </values>
+</CustomMetadata>

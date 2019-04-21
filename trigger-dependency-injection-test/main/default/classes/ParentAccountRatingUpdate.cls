@@ -18,7 +18,7 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
         if (parentAccountsToUpdate == null || parentAccountsToUpdate.isEmpty()) {
             return 'Method executed: ParentAccountRatingUpdate.updateParentAccountRating, no job enqueued as there is no parent account to update.';
         }
-        else if (Test.isRunningTest() && parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
+        else if ((Test.isRunningTest() || System.isQueueable()) && parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
             update parentAccountsToUpdate.values();
             return 'Method executed: ParentAccountRatingUpdate.updateParentAccountRating, no job enqueued as this is a test class.';
         }
@@ -29,16 +29,17 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
     }
 
     private static Map<Id, Account> getParentAccountsWithRatingNull(List<Account> accounts) {
-        Set<String> parentAccountsId = new Set<String> ();
-        for (Account acc : accounts) {
-            if (acc.ParentId != null) {
-                parentAccountsId.add(acc.ParentId);
-            }
-        }
-        Map<Id, Account> parentAccounts = new Map<Id, Account>([SELECT Id, Rating
-                                                                FROM Account
-                                                                WHERE Id IN :parentAccountsId AND Rating = null]);
-        return parentAccounts.isEmpty() ? null : parentAccounts;
+        Set<String> parentAccountsIds = new Set<String> ();
+		for (Account acc : accounts) {
+			if (acc.ParentId != null) {
+				parentAccountsIds.add(acc.ParentId);
+			}
+		}
+		Map<Id, Account> parentAccounts = new Map<Id, Account> ();
+		if (!parentAccountsIds.isEmpty()) {
+			parentAccounts.putAll([SELECT Id, Rating FROM Account WHERE Id IN :parentAccountsIds AND Rating = null]);
+		}
+		return parentAccounts.isEmpty() ? null : parentAccounts;
     }
 
     private static Map<Id, Account> setRatingFromChild(List<Account> accounts,
@@ -61,8 +62,8 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
     public Object call(String action, Map<String, Object> arguments) {
         switch on action {
             when 'updateParentAccountRating' {
-                return updateParentAccountRating((List<Account>)arguments.get('records'),
-                                                 (Map<Id, Account>)arguments.get('oldRecords'));
+                return updateParentAccountRating((List<Account>)arguments.get('parameter1'),
+                                                 (Map<Id, Account>)arguments.get('parameter2'));
             }
             when else {
                 throw new ExtensionMalformedCallException('Method not implemented');
