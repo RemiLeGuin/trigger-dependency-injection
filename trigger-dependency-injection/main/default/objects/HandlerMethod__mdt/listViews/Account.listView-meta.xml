@@ -5,8 +5,10 @@
     <columns>ClassName__c</columns>
     <columns>MethodName__c</columns>
     <columns>CallingTrigger__c</columns>
-    <columns>Moments__c</columns>
-    <columns>Operations__c</columns>
+    <columns>Moment__c</columns>
+    <columns>Operation__c</columns>
+    <columns>Parameter1__c</columns>
+    <columns>Parameter2__c</columns>
     <columns>IndexOfExecution__c</columns>
     <columns>Active__c</columns>
     <filterScope>Everything</filterScope>
