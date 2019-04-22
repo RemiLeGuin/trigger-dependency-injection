@@ -16,13 +16,18 @@ public with sharing class ParentAccountEmployeesUpdate implements Callable, Queu
 		Set<Id> parentAccountsIdsToUpdate = getParentAccountsIdsToUpdate(accounts, oldAccounts);
 		Map<Id, Account> parentAccountsToUpdate = parentAccountsIdsToUpdate.isEmpty() ?
 												  null : setParentAccountsEmployees(parentAccountsIdsToUpdate);
-		if ((Test.isRunningTest() || System.isQueueable()) && parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
-			update parentAccountsToUpdate.values();
-		}
-		else if (parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
-			System.enqueueJob(new ParentAccountEmployeesUpdate(parentAccountsToUpdate.values()));
-		}
-        return 'Method executed: ParentAccountEmployeesUpdate.updateParentAccountEmployees';
+		if (parentAccountsToUpdate == null || parentAccountsToUpdate.isEmpty()) {
+            return 'Method executed: ParentAccountEmployeesUpdate.updateParentAccountEmployees, no job enqueued as there is no parent account to update.';
+        }
+        else if ((Test.isRunningTest() || System.isQueueable() || System.isFuture() || System.isBatch())
+                 && parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
+            update parentAccountsToUpdate.values();
+            return 'Method executed: ParentAccountEmployeesUpdate.updateParentAccountEmployees, no job enqueued as this is already asynchronous or test class.';
+        }
+        else {
+            ID jobID = System.enqueueJob(new ParentAccountEmployeesUpdate(parentAccountsToUpdate.values()));
+            return 'Job enqueued: ParentAccountEmployeesUpdate.updateParentAccountEmployees with ID: ' + jobID;
+        }
 	}
 
 	private static Set<Id> getParentAccountsIdsToUpdate(List<Account> accounts, Map<Id, Account> oldAccounts) {
