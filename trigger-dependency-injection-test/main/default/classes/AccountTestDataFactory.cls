@@ -36,7 +36,9 @@ public class AccountTestDataFactory {
 		insert parentAccounts;
 		List<Account> accounts = new List<Account> ();
 		for (Integer i = 0; i<numberOfAccounts; i++) {
-			accounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0'), ParentId = parentAccounts[i].Id));
+			accounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0'),
+                                     ParentId = parentAccounts[i].Id,
+                                     NumberOfEmployees = 100));
 		}
 		insert accounts;
 		return accounts;

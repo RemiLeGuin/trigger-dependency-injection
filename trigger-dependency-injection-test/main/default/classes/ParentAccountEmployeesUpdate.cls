@@ -1,10 +1,10 @@
-public with sharing class ParentAccountNumberOfChildAccountUpdate implements Queueable {
+public with sharing class ParentAccountEmployeesUpdate implements Queueable {
 
 	private List<Account> accounts;
 
-    public ParentAccountNumberOfChildAccountUpdate() {}
+    public ParentAccountEmployeesUpdate() {}
 
-	public ParentAccountNumberOfChildAccountUpdate(List<Account> accounts) {
+	public ParentAccountEmployeesUpdate(List<Account> accounts) {
 		this.accounts = accounts;
 	}
 
@@ -12,24 +12,25 @@ public with sharing class ParentAccountNumberOfChildAccountUpdate implements Que
 		update accounts;
 	}
 
-	public static String updateParentAccountNumberOfChildAccount(List<Account> accounts, Map<Id, Account> oldAccounts) {
+	public static String updateParentAccountEmployees(List<Account> accounts, Map<Id, Account> oldAccounts) {
 		Set<Id> parentAccountsIdsToUpdate = getParentAccountsIdsToUpdate(accounts, oldAccounts);
 		Map<Id, Account> parentAccountsToUpdate = parentAccountsIdsToUpdate.isEmpty() ?
-												  null : setParentAccountsNumberOfChildAccount(parentAccountsIdsToUpdate);
+												  null : setParentAccountsEmployees(parentAccountsIdsToUpdate);
 		if ((Test.isRunningTest() || System.isQueueable()) && parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
 			update parentAccountsToUpdate.values();
 		}
 		else if (parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
-			System.enqueueJob(new ParentAccountNumberOfChildAccountUpdate(parentAccountsToUpdate.values()));
+			System.enqueueJob(new ParentAccountEmployeesUpdate(parentAccountsToUpdate.values()));
 		}
-        return 'Method executed: ParentAccountNumberOfChildAccountUpdate.updateParentAccountNumberOfChildAccount';
+        return 'Method executed: ParentAccountEmployeesUpdate.updateParentAccountEmployees';
 	}
 
 	private static Set<Id> getParentAccountsIdsToUpdate(List<Account> accounts, Map<Id, Account> oldAccounts) {
 		Set<Id> parentAccountsIdsToUpdate = new Set<Id> ();
 		if (accounts != null && !accounts.isEmpty() && oldAccounts != null && !oldAccounts.isEmpty()) {
 			for (Account child : accounts) {
-				if (oldAccounts.get(child.Id) != null && child.ParentId != oldAccounts.get(child.Id).ParentId) {
+				if (oldAccounts.get(child.Id) != null && (child.ParentId != oldAccounts.get(child.Id).ParentId
+					|| child.NumberOfEmployees != oldAccounts.get(child.Id).NumberOfEmployees)) {
 					parentAccountsIdsToUpdate.add(child.ParentId);
 					parentAccountsIdsToUpdate.add(oldAccounts.get(child.Id).ParentId);
 				}
@@ -49,22 +50,27 @@ public with sharing class ParentAccountNumberOfChildAccountUpdate implements Que
 		return parentAccountsIdsToUpdate;
 	}
 
-	private static Map<Id, Account> setParentAccountsNumberOfChildAccount(Set<Id> parentAccountsIdsToUpdate) {
+	private static Map<Id, Account> setParentAccountsEmployees(Set<Id> parentAccountsIdsToUpdate) {
 		Map<Id, Account> parentAccountsToUpdate = new Map<Id, Account> ();
 		for (Id accountId : parentAccountsIdsToUpdate) {
-			parentAccountsToUpdate.put(accountId, new Account(Id = accountId, NumberOfChildAccount__c = 0));
+			parentAccountsToUpdate.put(accountId, new Account(Id = accountId, NumberOfEmployees = null));
 		}
-		for (Account acc : [SELECT ParentId FROM Account WHERE ParentId IN :parentAccountsIdsToUpdate]) {
-			parentAccountsToUpdate.get(acc.ParentId).NumberOfChildAccount__c++;
+		for (Account acc : [SELECT ParentId, NumberOfEmployees FROM Account WHERE ParentId IN :parentAccountsIdsToUpdate]) {
+			if (parentAccountsToUpdate.get(acc.ParentId).NumberOfEmployees != null && acc.NumberOfEmployees != null) {
+				parentAccountsToUpdate.get(acc.ParentId).NumberOfEmployees += acc.NumberOfEmployees;
+			}
+			else if (parentAccountsToUpdate.get(acc.ParentId).NumberOfEmployees == null && acc.NumberOfEmployees != null) {
+				parentAccountsToUpdate.get(acc.ParentId).NumberOfEmployees = acc.NumberOfEmployees;
+			}
 		}
 		return parentAccountsToUpdate;
 	}
     
     public Object call(String action, Map<String, Object> arguments) {
         switch on action {
-            when 'updateParentAccountNumberOfChildAccount' {
-                return updateParentAccountNumberOfChildAccount((List<Account>)arguments.get('parameter1'),
-                                                               (Map<Id, Account>)arguments.get('parameter2'));
+            when 'updateParentAccountEmployees' {
+                return updateParentAccountEmployees((List<Account>)arguments.get('parameter1'),
+													(Map<Id, Account>)arguments.get('parameter2'));
             }
             when else {
                 throw new ExtensionMalformedCallException('Method not implemented');
