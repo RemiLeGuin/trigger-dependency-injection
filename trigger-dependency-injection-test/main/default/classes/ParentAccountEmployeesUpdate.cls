@@ -1,4 +1,4 @@
-public with sharing class ParentAccountEmployeesUpdate implements Queueable {
+public with sharing class ParentAccountEmployeesUpdate implements Callable, Queueable {
 
 	private List<Account> accounts;
 
