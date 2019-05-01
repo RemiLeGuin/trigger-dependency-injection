@@ -24,6 +24,11 @@ global without sharing class Caller {
         }
     }
 
+    /**
+    * @description Set the chosen parameters from the custom metadata to pass to the method to be called.
+    * @param method Custom metadata containing information about the method to execute.
+    * @return A map with parameter names and their value as an object.
+    */
     private static Map<String, Object> setParameters(HandlerMethod__mdt method) {
         Map<String, Object> parameters = new Map<String, Object> ();
         switch on method.Parameter1__c {
