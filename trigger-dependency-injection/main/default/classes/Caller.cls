@@ -4,7 +4,7 @@
 * @description Trigger handlers caller breaking up the dependencies between triggers and classes called by the triggers (handlers, service managers...). The handler classes shall implement the System.Callable interface provided by Salesforce.
 */
 global without sharing class Caller {
-
+    
     /**
     * @description Get the custom metadata containing information on the handlers and execute them.
     * @param callingTrigger Name of the trigger calling the method.
@@ -23,7 +23,7 @@ global without sharing class Caller {
             callHandler(method, callableClass, parameters);
         }
     }
-
+    
     /**
     * @description Set the chosen parameters from the custom metadata to pass to the method to be called.
     * @param method Custom metadata containing information about the method to execute.
@@ -73,7 +73,7 @@ global without sharing class Caller {
         }
         return parameters;
     }
-
+    
     /**
     * @description Instanciates and stores a handler class or get it from the Map if it has previously been.
     * @param method Custom metadata containing information about the method to execute.
@@ -91,7 +91,7 @@ global without sharing class Caller {
             return instanciatedClasses.get(method.ClassName__c);
         }
     }
-
+    
     /**
     * @description Calls the handler method to be executed according the Trigger context.
     * @param method Custom metadata containing information about the method to execute.

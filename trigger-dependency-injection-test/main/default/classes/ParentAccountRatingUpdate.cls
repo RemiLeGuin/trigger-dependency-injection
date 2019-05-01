@@ -1,17 +1,17 @@
 public with sharing class ParentAccountRatingUpdate implements Callable, Queueable {
-
+    
     private List<Account> accounts;
-
+    
     public ParentAccountRatingUpdate() {}
-
-	public ParentAccountRatingUpdate(List<Account> accounts) {
-		this.accounts = accounts;
-	}
-
+    
+    public ParentAccountRatingUpdate(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+    
     public void execute(QueueableContext context) {
         update accounts;
     }
-
+    
     public static String updateParentAccountRating(List<Account> accounts, Map<Id, Account> oldAccounts) {
         Map<Id, Account> parentAccountsWithRatingNull = getParentAccountsWithRatingNull(accounts);
         Map<Id, Account> parentAccountsToUpdate = setRatingFromChild(accounts, oldAccounts, parentAccountsWithRatingNull);
@@ -28,21 +28,21 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
             return 'Job enqueued: ParentAccountRatingUpdate.updateParentAccountRatingQueueable with ID: ' + jobID;
         }
     }
-
+    
     private static Map<Id, Account> getParentAccountsWithRatingNull(List<Account> accounts) {
         Set<String> parentAccountsIds = new Set<String> ();
-		for (Account acc : accounts) {
-			if (acc.ParentId != null) {
-				parentAccountsIds.add(acc.ParentId);
-			}
-		}
-		Map<Id, Account> parentAccounts = new Map<Id, Account> ();
-		if (!parentAccountsIds.isEmpty()) {
-			parentAccounts.putAll([SELECT Id, Rating FROM Account WHERE Id IN :parentAccountsIds AND Rating = null]);
-		}
-		return parentAccounts.isEmpty() ? null : parentAccounts;
+        for (Account acc : accounts) {
+            if (acc.ParentId != null) {
+                parentAccountsIds.add(acc.ParentId);
+            }
+        }
+        Map<Id, Account> parentAccounts = new Map<Id, Account> ();
+        if (!parentAccountsIds.isEmpty()) {
+            parentAccounts.putAll([SELECT Id, Rating FROM Account WHERE Id IN :parentAccountsIds AND Rating = null]);
+        }
+        return parentAccounts.isEmpty() ? null : parentAccounts;
     }
-
+    
     private static Map<Id, Account> setRatingFromChild(List<Account> accounts,
                                                        Map<Id, Account> oldAccounts,
                                                        Map<Id, Account> parentAccountsWithRatingNull) {
@@ -59,7 +59,7 @@ public with sharing class ParentAccountRatingUpdate implements Callable, Queueab
         }
         return parentAccountsToUpdate.isEmpty() ? null : parentAccountsToUpdate;
     }
-
+    
     public Object call(String action, Map<String, Object> arguments) {
         switch on action {
             when 'updateParentAccountRating' {

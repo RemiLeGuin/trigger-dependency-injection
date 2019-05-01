@@ -1,5 +1,5 @@
 public with sharing class AccountDelete implements Callable {
-
+    
     public static String checkAccountRating(List<Account> oldAccounts) {
         for (Account acc : oldAccounts) {
             if (acc.Rating == 'Hot') {
@@ -8,7 +8,7 @@ public with sharing class AccountDelete implements Callable {
         }
         return 'Method executed: AccountDelete.checkAccountRating';
     }
-
+    
     public Object call(String action, Map<String, Object> arguments) {
         switch on action {
             when 'checkAccountRating' {
@@ -21,5 +21,5 @@ public with sharing class AccountDelete implements Callable {
     }
     
     public class ExtensionMalformedCallException extends Exception {}
-
+    
 }

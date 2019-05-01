@@ -14,14 +14,14 @@ public with sharing class AccountRatingUpdate implements Callable {
         }
         return 'Method executed: AccountRatingUpdate.updateAccountRating';
     }
-
+    
     public static String updateAccountDescription(List<Account> accounts) {
-		for (Account acc : accounts) {
-			acc.Description = acc.Rating == null ? null : 'Account is becoming ' + acc.Rating + '!';
-		}
+        for (Account acc : accounts) {
+            acc.Description = acc.Rating == null ? null : 'Account is becoming ' + acc.Rating + '!';
+        }
         return 'Method executed: AccountRatingUpdate.updateAccountDescription';
-	}
-
+    }
+    
     public Object call(String action, Map<String, Object> arguments) {
         switch on action {
             when 'updateAccountRating' {
