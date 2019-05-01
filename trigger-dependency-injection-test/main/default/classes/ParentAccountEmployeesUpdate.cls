@@ -1,8 +1,8 @@
 public with sharing class ParentAccountEmployeesUpdate implements Callable, Queueable {
 
 	private List<Account> accounts;
-
-    public ParentAccountEmployeesUpdate() {}
+	
+	public ParentAccountEmployeesUpdate() {}
 
 	public ParentAccountEmployeesUpdate(List<Account> accounts) {
 		this.accounts = accounts;
@@ -19,7 +19,7 @@ public with sharing class ParentAccountEmployeesUpdate implements Callable, Queu
 		if (parentAccountsToUpdate == null || parentAccountsToUpdate.isEmpty()) {
             return 'Method executed: ParentAccountEmployeesUpdate.updateParentAccountEmployees, no job enqueued as there is no parent account to update.';
         }
-        else if ((Test.isRunningTest() || System.isQueueable() || System.isFuture() || System.isBatch())
+        else if ((System.isQueueable() || System.isFuture() || System.isBatch())
                  && parentAccountsToUpdate != null && !parentAccountsToUpdate.isEmpty()) {
             update parentAccountsToUpdate.values();
             return 'Method executed: ParentAccountEmployeesUpdate.updateParentAccountEmployees, no job enqueued as this is already asynchronous or test class.';
