@@ -9,18 +9,19 @@ global without sharing class Caller {
     * @description Get the custom metadata containing information on the handlers and execute them.
     * @param callingTrigger Name of the trigger calling the method.
     */
-    global static void callHandlers(String callingTrigger) {
+    global static void callHandlers(String callingTrigger, String moment, String operation) {
         List<HandlerMethod__mdt> methods = [SELECT ClassName__c, IndexOfExecution__c, MethodName__c,
                                             Moment__c, Operation__c, Parameter1__c, Parameter2__c
                                             FROM HandlerMethod__mdt
                                             WHERE Active__c = true AND CallingTrigger__c = :callingTrigger
+                                                  AND Moment__c = :moment AND Operation__c = :operation
                                             ORDER BY IndexOfExecution__c ASC];
         // Stores the handler classes which already may have been instanciated.
         Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
         for (HandlerMethod__mdt method : methods) {
             Callable callableClass = instanciateHandler(method, instanciatedClasses);
             Map<String, Object> parameters = setParameters(method);
-            callHandler(method, callableClass, parameters);
+            System.debug(callableClass.call(method.MethodName__c, parameters));
         }
     }
     
@@ -89,42 +90,6 @@ global without sharing class Caller {
         else {
             // If the class has already been instanciated, get it from the Map where it has previously been stored.
             return instanciatedClasses.get(method.ClassName__c);
-        }
-    }
-    
-    /**
-    * @description Calls the handler method to be executed according the Trigger context.
-    * @param method Custom metadata containing information about the method to execute.
-    * @param callableClass Class implementing the Callable interface that has been instanciated beforehand.
-    * @param parameters Inputs to pass to the method.
-    */
-    private static void callHandler(HandlerMethod__mdt method, Callable callableClass, Map<String, Object> parameters) {
-        // The System.debug operations use the call method from the Callable interface implemented in the handler class.
-        // The call method dynamically calls the informed method in the handler and returns back a state message.
-        if (Trigger.isBefore && method.Moment__c == 'before') {
-            if (Trigger.isInsert && method.Operation__c == 'insert') {
-                System.debug(callableClass.call(method.MethodName__c, parameters));
-            }
-            if (Trigger.isUpdate && method.Operation__c == 'update') {
-                System.debug(callableClass.call(method.MethodName__c, parameters));
-            }
-            if (Trigger.isDelete && method.Operation__c == 'delete') {
-                System.debug(callableClass.call(method.MethodName__c, parameters));
-            }
-        }
-        if (Trigger.isAfter && method.Moment__c == 'after') {
-            if (Trigger.isInsert && method.Operation__c == 'insert') {
-                System.debug(callableClass.call(method.MethodName__c, parameters));
-            }
-            if (Trigger.isUpdate && method.Operation__c == 'update') {
-                System.debug(callableClass.call(method.MethodName__c, parameters));
-            }
-            if (Trigger.isDelete && method.Operation__c == 'delete') {
-                System.debug(callableClass.call(method.MethodName__c, parameters));
-            }
-            if (Trigger.isUndelete && method.Operation__c == 'undelete') {
-                System.debug(callableClass.call(method.MethodName__c, parameters));
-            }
         }
     }
     

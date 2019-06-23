@@ -27,16 +27,21 @@ sfdx force:package:version:create --package "Trigger Dependency Injection (TDI)"
 sfdx force:package:install --wait 10 --publishwait 10 --package "Trigger Dependency Injection (TDI)@0.1.0-1" --installationkey /*password*/ --noprompt --targetusername /*targeted org or username*/
 ```
 
-## Step 2: Create a generic trigger to handle all actions on a SObject
+## Step 2: Create generic triggers to handle all actions on a SObject
 
--   Create an 'Account' trigger and paste the following code in the default org:
+-   Create triggers for each event and operation on the Account SObject:
+    -   AccountBeforeInsert
+    -   AccountAfterInsert
+    -   AccountBeforeUpdate
+    -   AccountAfterUpdate
+    -   AccountBeforeDelete
+    -   AccountAfterDelete
+    -   AccountAfterUndelete
+-   Call the 'callHandlers' method in the 'Caller' class changing the parameters accordingly. Example:
 
 ```
-trigger Account on Account (before insert, before update, before delete,
-                            after insert, after update, after delete, after undelete) {
-  
-  Caller.callHandlers('Account');
-  
+trigger AccountBeforeInsert on Account (before insert) {
+  Caller.callHandlers('Account', 'before', 'insert');
 }
 ```
 
