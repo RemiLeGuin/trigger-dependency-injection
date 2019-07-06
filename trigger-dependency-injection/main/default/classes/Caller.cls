@@ -16,7 +16,7 @@ global without sharing class Caller {
     * @param callingTrigger Name of the trigger calling the method.
     */
     global static void callHandlers(String callingTrigger, String moment, String operation) {
-        List<HandlerMethod__mdt> methods = [SELECT ClassName__c, IndexOfExecution__c, MethodName__c,
+        List<HandlerMethod__mdt> methods = [SELECT CallingTrigger__c, ClassName__c, IndexOfExecution__c, MethodName__c,
                                             Moment__c, Operation__c, Parameter1__c, Parameter2__c
                                             FROM HandlerMethod__mdt
                                             WHERE Active__c = true AND CallingTrigger__c = :callingTrigger
@@ -25,7 +25,8 @@ global without sharing class Caller {
         // Stores the handler classes which already may have been instanciated.
         Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
         for (HandlerMethod__mdt method : methods) {
-            if (!bypassedMethods.contains(method.CallingTrigger__c + '.' + method.ClassName__c + '.' + method.MethodName__c)) {
+            if (String.isBlank(bypassedMethods)
+                || !bypassedMethods.contains(method.CallingTrigger__c + '.' + method.ClassName__c + '.' + method.MethodName__c)) {
                 Callable callableClass = instanciateHandler(method, instanciatedClasses);
                 Map<String, Object> parameters = setParameters(method);
                 System.debug(callableClass.call(method.MethodName__c, parameters));
