@@ -5,6 +5,12 @@
 */
 global without sharing class Caller {
     
+    private static final String bypassedMethods;
+
+    static {
+        bypassedMethods = [SELECT BypassedMethods__c FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1].BypassedMethods__c;
+    }
+
     /**
     * @description Get the custom metadata containing information on the handlers and execute them.
     * @param callingTrigger Name of the trigger calling the method.
@@ -19,9 +25,11 @@ global without sharing class Caller {
         // Stores the handler classes which already may have been instanciated.
         Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
         for (HandlerMethod__mdt method : methods) {
-            Callable callableClass = instanciateHandler(method, instanciatedClasses);
-            Map<String, Object> parameters = setParameters(method);
-            System.debug(callableClass.call(method.MethodName__c, parameters));
+            if (!bypassedMethods.contains(method.CallingTrigger__c + '.' + method.ClassName__c + '.' + method.MethodName__c)) {
+                Callable callableClass = instanciateHandler(method, instanciatedClasses);
+                Map<String, Object> parameters = setParameters(method);
+                System.debug(callableClass.call(method.MethodName__c, parameters));
+            }
         }
     }
     
