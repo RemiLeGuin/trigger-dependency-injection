@@ -16,8 +16,8 @@ global without sharing class Caller {
     * @param callingTrigger Name of the trigger calling the method.
     */
     global static void callHandlers(String callingTrigger, String moment, String operation) {
-        List<HandlerMethod__mdt> methods = [SELECT ClassName__c, DeveloperName, IndexOfExecution__c, MethodName__c,
-                                            Moment__c, Operation__c, Parameter1__c, Parameter2__c
+        List<HandlerMethod__mdt> methods = [SELECT ClassName__c, DeveloperName, IndexOfExecution__c,
+                                                   MethodName__c, Parameter1__c, Parameter2__c
                                             FROM HandlerMethod__mdt
                                             WHERE Active__c = true AND CallingTrigger__c = :callingTrigger
                                                   AND Moment__c = :moment AND Operation__c = :operation
@@ -26,8 +26,8 @@ global without sharing class Caller {
         Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
         for (HandlerMethod__mdt method : methods) {
             if (String.isBlank(bypassedMethods) || !bypassedMethods.contains(method.DeveloperName)) {
-                Callable callableClass = instanciateHandler(method, instanciatedClasses);
-                Map<String, Object> parameters = setParameters(method);
+                Callable callableClass = instanciateHandler(method.ClassName__c, instanciatedClasses);
+                Map<String, Object> parameters = setParameters(method.Parameter1__c, method.Parameter2__c);
                 System.debug(callableClass.call(method.MethodName__c, parameters));
             }
         }
@@ -35,12 +35,13 @@ global without sharing class Caller {
     
     /**
     * @description Set the chosen parameters from the custom metadata to pass to the method to be called.
-    * @param method Custom metadata containing information about the method to execute.
+    * @param parameter1 First parameter label to pass to the method.
+    * @param parameter2 Second parameter label to pass to the method.
     * @return A map with parameter names and their value as an object.
     */
-    private static Map<String, Object> setParameters(HandlerMethod__mdt method) {
+    private static Map<String, Object> setParameters(String parameter1, String parameter2) {
         Map<String, Object> parameters = new Map<String, Object> ();
-        switch on method.Parameter1__c {
+        switch on parameter1 {
             when 'null' {
                 parameters.put('parameter1', null);
             }
@@ -60,7 +61,7 @@ global without sharing class Caller {
                 System.debug('No first parameter.');
             }
         }
-        switch on method.Parameter2__c {
+        switch on parameter2 {
             when 'null' {
                 parameters.put('parameter2', null);
             }
@@ -85,19 +86,20 @@ global without sharing class Caller {
     
     /**
     * @description Instanciates and stores a handler class or get it from the Map if it has previously been.
-    * @param method Custom metadata containing information about the method to execute.
+    * @param className Name of the class to be instanciated.
+    * @param instanciatedClasses Map of already instanciated callable classes.
     * @return Instanciated class implementing Callable interface.
     */
-    private static Callable instanciateHandler(HandlerMethod__mdt method, Map<String, Callable> instanciatedClasses) {
-        if (instanciatedClasses.isEmpty() || instanciatedClasses.get(method.ClassName__c) == null) {
-            Callable callableClass = (Callable)Type.forName(method.ClassName__c).newInstance();
+    private static Callable instanciateHandler(String className, Map<String, Callable> instanciatedClasses) {
+        if (instanciatedClasses.isEmpty() || instanciatedClasses.get(className) == null) {
+            Callable callableClass = (Callable)Type.forName(className).newInstance();
             // Stores the instanciated handler class in case it is called again later.
-            instanciatedClasses.put(method.ClassName__c, callableClass);
+            instanciatedClasses.put(className, callableClass);
             return callableClass;
         }
         else {
             // If the class has already been instanciated, get it from the Map where it has previously been stored.
-            return instanciatedClasses.get(method.ClassName__c);
+            return instanciatedClasses.get(className);
         }
     }
     
