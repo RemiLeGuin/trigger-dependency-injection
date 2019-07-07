@@ -14,8 +14,8 @@ global without sharing class Caller {
     /**
     * @description Get the custom metadata containing information on the handlers and execute them.
     * @param callingTrigger Name of the trigger calling the method.
-    * @param callingTrigger When the method shall be called: before or after.
-    * @param callingTrigger DML operation for which the method shall be called: insert, update, delete or undelete.
+    * @param moment When the method shall be called: before or after.
+    * @param operation DML operation for which the method shall be called: insert, update, delete or undelete.
     */
     global static void callHandlers(String callingTrigger, String moment, String operation) {
         List<HandlerMethod__mdt> methods = [SELECT ClassName__c, DeveloperName, IndexOfExecution__c,
