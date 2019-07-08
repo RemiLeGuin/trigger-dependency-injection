@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Test</fullName>
+    <columns>MasterLabel</columns>
+    <columns>ClassName__c</columns>
+    <columns>MethodName__c</columns>
+    <columns>CallingTrigger__c</columns>
+    <columns>Moment__c</columns>
+    <columns>Operation__c</columns>
+    <columns>Parameter1__c</columns>
+    <columns>Parameter2__c</columns>
+    <columns>IndexOfExecution__c</columns>
+    <columns>Active__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CallingTrigger__c</field>
+        <operation>equals</operation>
+        <value>Test</value>
+    </filters>
+    <label>Test</label>
+</ListView>
