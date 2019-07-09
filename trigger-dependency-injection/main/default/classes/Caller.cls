@@ -41,6 +41,7 @@ global without sharing class Caller {
     * @param parameter2 Second parameter label to pass to the method.
     * @return A map with parameter names and their value as an object.
     */
+    @TestVisible
     private static Map<String, Object> setParameters(String parameter1, String parameter2) {
         Map<String, Object> parameters = new Map<String, Object> ();
         switch on parameter1 {
@@ -92,6 +93,7 @@ global without sharing class Caller {
     * @param instanciatedClasses Map of already instanciated callable classes.
     * @return Instanciated class implementing Callable interface.
     */
+    @TestVisible
     private static Callable instanciateHandler(String className, Map<String, Callable> instanciatedClasses) {
         if (instanciatedClasses.isEmpty() || instanciatedClasses.get(className) == null) {
             Callable callableClass = (Callable)Type.forName(className).newInstance();
