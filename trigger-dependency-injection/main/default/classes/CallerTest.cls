@@ -7,6 +7,23 @@ private class CallerTest {
     }
 
     @IsTest
+	private static void testNonImplementedMethodForCallerMock() {
+        String exceptionThrown;
+
+		Test.startTest();
+        try {
+            Callable callableClass = (Callable)Type.forName('CallerMock').newInstance();
+            callableClass.call('nonImplementedMethod', new Map<String, Object>());
+        }
+        catch (Exception e) {
+            exceptionThrown = e.getMessage();
+        }
+		Test.stopTest();
+
+        System.assertEquals('Method not implemented', exceptionThrown, 'No exception thrown for method not implemented');
+	}
+
+    @IsTest
     private static void setParametersTestNull() {
         Caller.setParameters('null', 'null');
     }
