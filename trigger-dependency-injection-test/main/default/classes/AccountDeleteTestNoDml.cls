@@ -1,75 +1,75 @@
 @IsTest
 private class AccountDeleteTestNoDml {
-
-	@IsTest
-	private static void checkAccountRatingTestNull() {
-		List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating(null, 200);
+    
+    @IsTest
+    private static void checkAccountRatingTestNull() {
+        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating(null, 200);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
         };
-
-		Test.startTest();
+                    
+        Test.startTest();
         Callable callableClass = (Callable)Type.forName('AccountDelete').newInstance();
         callableClass.call('checkAccountRating', parameters);
-		Test.stopTest();
-
+        Test.stopTest();
+        
         System.assert(!ApexPages.hasMessages(), 'An error message is displayed forbidding deletion while accounts have no rating');
-	}
-
-	@IsTest
-	private static void checkAccountRatingTestCold() {
-		List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating('Cold', 200);
+    }
+    
+    @IsTest
+    private static void checkAccountRatingTestCold() {
+        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating('Cold', 200);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
         };
-
-		Test.startTest();
+                    
+        Test.startTest();
         Callable callableClass = (Callable)Type.forName('AccountDelete').newInstance();
         callableClass.call('checkAccountRating', parameters);
-		Test.stopTest();
-
+        Test.stopTest();
+        
         System.assert(!ApexPages.hasMessages(), 'An error message is displayed forbidding deletion while accounts are \'Cold\'');
-	}
-
+    }
+    
     @IsTest
-	private static void checkAccountRatingTestWarm() {
-		List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating('Warm', 200);
+    private static void checkAccountRatingTestWarm() {
+        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating('Warm', 200);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
         };
-
-		Test.startTest();
+                    
+        Test.startTest();
         Callable callableClass = (Callable)Type.forName('AccountDelete').newInstance();
         callableClass.call('checkAccountRating', parameters);
-		Test.stopTest();
-
+        Test.stopTest();
+        
         System.assert(!ApexPages.hasMessages(), 'An error message is displayed forbidding deletion while accounts are \'Warm\'');
-	}
-
+    }
+    
     @IsTest
-	private static void checkAccountRatingTestHot() {
-		List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating('Hot', 200);
+    private static void checkAccountRatingTestHot() {
+        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating('Hot', 200);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
         };
-
-		Test.startTest();
+                    
+        Test.startTest();
         Callable callableClass = (Callable)Type.forName('AccountDelete').newInstance();
         callableClass.call('checkAccountRating', parameters);
-		Test.stopTest();
-
+        Test.stopTest();
+        
         System.assert(ApexPages.hasMessages(), 'No error message is displayed allowing deletion while accounts are \'Hot\'');
-	}
-
-	@IsTest
-	private static void testNonImplementedMethod() {
+    }
+    
+    @IsTest
+    private static void testNonImplementedMethod() {
         String exceptionThrown;
-
-		Test.startTest();
+        
+        Test.startTest();
         try {
             Callable callableClass = (Callable)Type.forName('AccountDelete').newInstance();
             callableClass.call('nonImplementedMethod', new Map<String, Object>());
@@ -77,9 +77,9 @@ private class AccountDeleteTestNoDml {
         catch (Exception e) {
             exceptionThrown = e.getMessage();
         }
-		Test.stopTest();
-
+        Test.stopTest();
+        
         System.assertEquals('Method not implemented', exceptionThrown, 'No exception thrown for method not implemented');
-	}
-
+    }
+    
 }
