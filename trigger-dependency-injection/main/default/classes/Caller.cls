@@ -19,7 +19,7 @@ global without sharing class Caller {
     * @param operation DML operation for which the method shall be called: insert, update, delete or undelete.
     */
     global static void callHandlers(String callingTrigger, String moment, String operation) {
-        if (byPassAllTriggers == true) {
+        if (byPassAllTriggers == false) {
             List<HandlerMethod__mdt> methods = [SELECT ClassName__c, DeveloperName, IndexOfExecution__c,
                                                        MethodName__c, Parameter1__c, Parameter2__c
                                                 FROM HandlerMethod__mdt
