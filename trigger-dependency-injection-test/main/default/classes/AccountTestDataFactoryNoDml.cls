@@ -1,22 +1,82 @@
 @IsTest
 public class AccountTestDataFactoryNoDml {
     
-    public static List<Account> getAccountsWithRating(String rating, Integer numberOfAccounts) {
+    public static List<Account> getParentAccounts(Boolean insertRecords, Boolean byPassAllTriggers, Integer numberOfAccounts) {
         List<Account> accounts = new List<Account> ();
         for (Integer i = 0; i < numberOfAccounts; i++) {
-            accounts.add(new Account(Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA',
-                                     Name = 'Test' + String.valueOf(i).leftPad(3, '0'),
-                                     Rating = rating));
+            Account acc = new Account(Name = 'ParentAccount' + String.valueOf(i).leftPad(3, '0'));
+            if (!insertRecords) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'bbbBBBB';
+            }
+            accounts.add(acc);
+        }
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
+        }
+        else if (insertRecords) {
+            insert accounts;
         }
         return accounts;
     }
     
-    public static List<Account> getAccountsWithAnnualRevenue(Integer annualRevenue, Integer numberOfAccounts) {
+    public static List<Account> getAccountsWithEmployees(Boolean insertRecords, Boolean byPassAllTriggers, Integer numberOfAccounts, Integer employees) {
         List<Account> accounts = new List<Account> ();
         for (Integer i = 0; i < numberOfAccounts; i++) {
-            accounts.add(new Account(Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA',
-                                     Name = 'Test' + String.valueOf(i).leftPad(3, '0'),
-                                     AnnualRevenue = annualRevenue));
+            Account acc = new Account(Name = 'AccountWithEmployees' + String.valueOf(i).leftPad(3, '0'), NumberOfEmployees = employees);
+            if (!insertRecords) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA';
+            }
+            accounts.add(acc);
+        }
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
+        }
+        else if (insertRecords) {
+            insert accounts;
+        }
+        return accounts;
+    }
+    
+    public static List<Account> getAccountsWithRating(Boolean insertRecords, Boolean byPassAllTriggers, Integer numberOfAccounts, String rating) {
+        List<Account> accounts = new List<Account> ();
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            Account acc = new Account(Name = 'AccountWithRating' + String.valueOf(i).leftPad(3, '0'), Rating = rating);
+            if (!insertRecords) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA';
+            }
+            accounts.add(acc);
+        }
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
+        }
+        else if (insertRecords) {
+            insert accounts;
+        }
+        return accounts;
+    }
+    
+    public static List<Account> getAccountsWithAnnualRevenue(Boolean insertRecords, Boolean byPassAllTriggers, Integer numberOfAccounts, Integer annualRevenue) {
+        List<Account> accounts = new List<Account> ();
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            Account acc = new Account(Name = 'AccountWithAnnualRevenue' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = annualRevenue);
+            if (!insertRecords) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA';
+            }
+            accounts.add(acc);
+        }
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
+        }
+        else if (insertRecords) {
+            insert accounts;
         }
         return accounts;
     }
