@@ -6,6 +6,7 @@
 global without sharing class Caller {
     
     private static final String bypassedMethods;
+    public static Boolean byPassAllTriggers = false;
 
     static {
         bypassedMethods = [SELECT BypassedMethods__c FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1].BypassedMethods__c;
@@ -18,19 +19,21 @@ global without sharing class Caller {
     * @param operation DML operation for which the method shall be called: insert, update, delete or undelete.
     */
     global static void callHandlers(String callingTrigger, String moment, String operation) {
-        List<HandlerMethod__mdt> methods = [SELECT ClassName__c, DeveloperName, IndexOfExecution__c,
-                                                   MethodName__c, Parameter1__c, Parameter2__c
-                                            FROM HandlerMethod__mdt
-                                            WHERE Active__c = true AND CallingTrigger__c = :callingTrigger
-                                                  AND Moment__c = :moment AND Operation__c = :operation
-                                            ORDER BY IndexOfExecution__c ASC];
-        // Stores the handler classes which already may have been instanciated.
-        Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
-        for (HandlerMethod__mdt method : methods) {
-            if (String.isBlank(bypassedMethods) || !bypassedMethods.contains(method.DeveloperName)) {
-                Callable callableClass = instanciateHandler(method.ClassName__c, instanciatedClasses);
-                Map<String, Object> parameters = setParameters(method.Parameter1__c, method.Parameter2__c);
-                System.debug(callableClass.call(method.MethodName__c, parameters));
+        if (byPassAllTriggers == true) {
+            List<HandlerMethod__mdt> methods = [SELECT ClassName__c, DeveloperName, IndexOfExecution__c,
+                                                       MethodName__c, Parameter1__c, Parameter2__c
+                                                FROM HandlerMethod__mdt
+                                                WHERE Active__c = true AND CallingTrigger__c = :callingTrigger
+                                                      AND Moment__c = :moment AND Operation__c = :operation
+                                                ORDER BY IndexOfExecution__c ASC];
+            // Stores the handler classes which already may have been instanciated.
+            Map<String, Callable> instanciatedClasses = new Map<String, Callable> ();
+            for (HandlerMethod__mdt method : methods) {
+                if (String.isBlank(bypassedMethods) || !bypassedMethods.contains(method.DeveloperName)) {
+                    Callable callableClass = instanciateHandler(method.ClassName__c, instanciatedClasses);
+                    Map<String, Object> parameters = setParameters(method.Parameter1__c, method.Parameter2__c);
+                    System.debug(callableClass.call(method.MethodName__c, parameters));
+                }
             }
         }
     }
