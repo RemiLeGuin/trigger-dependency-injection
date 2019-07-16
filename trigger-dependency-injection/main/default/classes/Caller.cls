@@ -5,7 +5,7 @@
 */
 global without sharing class Caller {
     
-    private static final String bypassedMethods;
+    @TestVisible private static String bypassedMethods;
     public static Boolean byPassAllTriggers = false;
 
     static {
