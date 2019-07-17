@@ -21,6 +21,26 @@ public class AccountTestDataFactoryNoDml {
         return accounts;
     }
     
+    public static List<Account> getGrandParentAccounts(Boolean insertRecords, Boolean generateId, Boolean byPassAllTriggers, Integer numberOfAccounts) {
+        List<Account> accounts = new List<Account> ();
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            Account acc = new Account(Name = 'GrandParentAccount' + String.valueOf(i).leftPad(3, '0'));
+            if (!insertRecords && generateId) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'cccCCCC';
+            }
+            accounts.add(acc);
+        }
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
+        }
+        else if (insertRecords) {
+            insert accounts;
+        }
+        return accounts;
+    }
+    
     public static List<Account> getAccountsWithEmployees(Boolean insertRecords, Boolean generateId, Boolean byPassAllTriggers, Integer numberOfAccounts, Integer employees) {
         List<Account> accounts = new List<Account> ();
         for (Integer i = 0; i < numberOfAccounts; i++) {
