@@ -67,4 +67,19 @@ private class CallerTest {
         System.assertEquals(instanciatedClasses.get('CallerMock'), callableClass, 'No instanciated class returned');
     }
     
+    @IsTest
+    private static void bypassAllExceptTest() {
+        Caller.bypassAllExcept(new List<String> { 'CallerMockMockingMethod' }, null);
+    }
+
+    @IsTest
+    private static void bypassAllExceptTestNonexistentgMethod() {
+        Caller.bypassAllExcept(new List<String> { 'NonexistentgMethod' }, null);
+    }
+
+    @IsTest
+    private static void bypassAllExceptTestWithCallingTrigger() {
+        Caller.bypassAllExcept(new List<String> { 'CallerMockMockingMethod' }, 'Test');
+    }
+
 }

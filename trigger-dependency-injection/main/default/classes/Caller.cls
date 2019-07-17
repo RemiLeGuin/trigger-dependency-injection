@@ -109,5 +109,27 @@ global without sharing class Caller {
             return instanciatedClasses.get(className);
         }
     }
+
+    global static String bypassAllExcept(List<String> methodsToExecute, String callingTrigger) {
+        List<HandlerMethod__mdt> methods;
+        if (String.isBlank(callingTrigger)) {
+            methods = [SELECT DeveloperName FROM HandlerMethod__mdt];
+        }
+        else {
+            methods = [SELECT DeveloperName FROM HandlerMethod__mdt WHERE CallingTrigger__c = :callingTrigger];
+        }
+        List<String> bypassedMethodsSet = new List<String> ();
+        for (HandlerMethod__mdt method : methods) {
+            if (!methodsToExecute.contains(method.DeveloperName)) {
+                bypassedMethodsSet.add(method.DeveloperName);
+            }
+        }
+        String bypassedMethods = '';
+        if (!bypassedMethodsSet.isEmpty()) {
+            bypassedMethods = String.join(bypassedMethodsSet, ';');
+        }
+        Caller.bypassedMethods = bypassedMethods;
+        return bypassedMethods;
+    }
     
 }

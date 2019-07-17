@@ -36,7 +36,8 @@ private class ParentAccountEmployeesUpdateTestNoDml {
 
     @IsTest
     private static void byPassTest() {
-        Caller.bypassedMethods = 'toutes';
+        System.debug(Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesInsert' }, 'Account'));
+        System.debug(Caller.bypassedMethods);
         insert new Account(Name = 'Account');
         System.debug(Caller.bypassedMethods);
     }
