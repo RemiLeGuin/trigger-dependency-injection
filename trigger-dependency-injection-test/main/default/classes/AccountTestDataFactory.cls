@@ -1,99 +1,123 @@
 @IsTest
 public class AccountTestDataFactory {
     
-    public static List<Account> createAccounts(Integer numberOfAccounts) {
+    public static List<Account> getAccounts(Boolean insertRecords, Boolean generateId, Boolean byPassAllTriggers, Integer numberOfAccounts) {
         List<Account> accounts = new List<Account> ();
         for (Integer i = 0; i < numberOfAccounts; i++) {
-            accounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0')));
+            Account acc = new Account(Name = 'Account' + String.valueOf(i).leftPad(3, '0'));
+            if (!insertRecords && generateId) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA';
+            }
+            accounts.add(acc);
         }
-        insert accounts;
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
+        }
+        else if (insertRecords) {
+            insert accounts;
+        }
         return accounts;
     }
     
-    public static List<Account> createAccountsWithAnnualRevenue(Integer numberOfAccounts) {
+    public static List<Account> getParentAccounts(Boolean insertRecords, Boolean generateId, Boolean byPassAllTriggers, Integer numberOfAccounts) {
         List<Account> accounts = new List<Account> ();
-        for (Integer i = 0; i < Integer.valueOf(numberOfAccounts * 0.25); i++) {
-            accounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0')));
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            Account acc = new Account(Name = 'ParentAccount' + String.valueOf(i).leftPad(3, '0'));
+            if (!insertRecords && generateId) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'bbbBBBB';
+            }
+            accounts.add(acc);
         }
-        for (Integer i = Integer.valueOf(numberOfAccounts * 0.25); i < Integer.valueOf(numberOfAccounts * 0.5); i++) {
-            accounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = 200000));
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
         }
-        for (Integer i = Integer.valueOf(numberOfAccounts * 0.5); i < Integer.valueOf(numberOfAccounts * 0.75); i++) {
-            accounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = 600000));
+        else if (insertRecords) {
+            insert accounts;
         }
-        for (Integer i = Integer.valueOf(numberOfAccounts * 0.75); i < numberOfAccounts; i++) {
-            accounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = 1200000));
-        }
-        insert accounts;
         return accounts;
     }
     
-    public static List<Account> createAccountsWithParentAccount(Integer numberOfAccounts) {
-        List<Account> parentAccounts = new List<Account> ();
-        for (Integer i = 0; i < numberOfAccounts; i++) {
-            parentAccounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0')));
-        }
-        insert parentAccounts;
+    public static List<Account> getGrandParentAccounts(Boolean insertRecords, Boolean generateId, Boolean byPassAllTriggers, Integer numberOfAccounts) {
         List<Account> accounts = new List<Account> ();
         for (Integer i = 0; i < numberOfAccounts; i++) {
-            accounts.add(new Account(Name = 'Test' + String.valueOf(i).leftPad(3, '0'),
-                                     ParentId = parentAccounts[i].Id,
-                                     NumberOfEmployees = 100));
+            Account acc = new Account(Name = 'GrandParentAccount' + String.valueOf(i).leftPad(3, '0'));
+            if (!insertRecords && generateId) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'cccCCCC';
+            }
+            accounts.add(acc);
         }
-        insert accounts;
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
+        }
+        else if (insertRecords) {
+            insert accounts;
+        }
         return accounts;
     }
     
-    public static List<Account> createAccountsWithAnnualRevenueAndParentAccount(Integer numberOfAccounts) {
-        List<Account> grandparentAccounts = new List<Account> ();
-        for (Integer i = 0; i < numberOfAccounts; i++) {
-            grandparentAccounts.add(new Account(Name = 'Grandparent' + String.valueOf(i).leftPad(3, '0')));
-        }
-        insert grandparentAccounts;
-        List<Account> parentAccounts = new List<Account> ();
-        for (Integer i = 0; i < numberOfAccounts; i++) {
-            parentAccounts.add(new Account(Name = 'Parent' + String.valueOf(i).leftPad(3, '0'), ParentId = grandparentAccounts[i].Id));
-        }
-        insert parentAccounts;
+    public static List<Account> getAccountsWithEmployees(Boolean insertRecords, Boolean generateId, Boolean byPassAllTriggers, Integer numberOfAccounts, Integer employees) {
         List<Account> accounts = new List<Account> ();
-        for (Integer i = 0; i < Integer.valueOf(numberOfAccounts * 0.25); i++) {
-            accounts.add(new Account(Name = 'Child' + String.valueOf(i).leftPad(3, '0'), ParentId = parentAccounts[i].Id));
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            Account acc = new Account(Name = 'AccountWithEmployees' + String.valueOf(i).leftPad(3, '0'), NumberOfEmployees = employees);
+            if (!insertRecords && generateId) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA';
+            }
+            accounts.add(acc);
         }
-        for (Integer i = Integer.valueOf(numberOfAccounts * 0.25); i < Integer.valueOf(numberOfAccounts * 0.5); i++) {
-            accounts.add(new Account(Name = 'Child' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = 200000, ParentId = parentAccounts[i].Id));
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
         }
-        for (Integer i = Integer.valueOf(numberOfAccounts * 0.5); i < Integer.valueOf(numberOfAccounts * 0.75); i++) {
-            accounts.add(new Account(Name = 'Child' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = 600000, ParentId = parentAccounts[i].Id));
+        else if (insertRecords) {
+            insert accounts;
         }
-        for (Integer i = Integer.valueOf(numberOfAccounts * 0.75); i < numberOfAccounts; i++) {
-            accounts.add(new Account(Name = 'Child' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = 1200000, ParentId = parentAccounts[i].Id));
-        }
-        insert accounts;
         return accounts;
     }
     
-    public static List<Account> createAccountsWithAnnualRevenueAndParentAccountNoHot(Integer numberOfAccounts) {
-        List<Account> grandparentAccounts = new List<Account> ();
-        for (Integer i = 0; i < numberOfAccounts; i++) {
-            grandparentAccounts.add(new Account(Name = 'Grandparent' + String.valueOf(i).leftPad(3, '0')));
-        }
-        insert grandparentAccounts;
-        List<Account> parentAccounts = new List<Account> ();
-        for (Integer i = 0; i < numberOfAccounts; i++) {
-            parentAccounts.add(new Account(Name = 'Parent' + String.valueOf(i).leftPad(3, '0'), ParentId = grandparentAccounts[i].Id));
-        }
-        insert parentAccounts;
+    public static List<Account> getAccountsWithRating(Boolean insertRecords, Boolean generateId, Boolean byPassAllTriggers, Integer numberOfAccounts, String rating) {
         List<Account> accounts = new List<Account> ();
-        for (Integer i = 0; i < Integer.valueOf(numberOfAccounts * 0.333334); i++) {
-            accounts.add(new Account(Name = 'Child' + String.valueOf(i).leftPad(3, '0'), ParentId = parentAccounts[i].Id));
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            Account acc = new Account(Name = 'AccountWithRating' + String.valueOf(i).leftPad(3, '0'), Rating = rating);
+            if (!insertRecords && generateId) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA';
+            }
+            accounts.add(acc);
         }
-        for (Integer i = Integer.valueOf(numberOfAccounts * 0.333334); i < Integer.valueOf(numberOfAccounts * 0.666667); i++) {
-            accounts.add(new Account(Name = 'Child' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = 200000, ParentId = parentAccounts[i].Id));
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
         }
-        for (Integer i = Integer.valueOf(numberOfAccounts * 0.666667); i < Integer.valueOf(numberOfAccounts); i++) {
-            accounts.add(new Account(Name = 'Child' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = 600000, ParentId = parentAccounts[i].Id));
+        else if (insertRecords) {
+            insert accounts;
         }
-        insert accounts;
+        return accounts;
+    }
+    
+    public static List<Account> getAccountsWithAnnualRevenue(Boolean insertRecords, Boolean generateId, Boolean byPassAllTriggers, Integer numberOfAccounts, Integer annualRevenue) {
+        List<Account> accounts = new List<Account> ();
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            Account acc = new Account(Name = 'AccountWithAnnualRevenue' + String.valueOf(i).leftPad(3, '0'), AnnualRevenue = annualRevenue);
+            if (!insertRecords && generateId) {
+                acc.Id = '00100000' + String.valueOf(i).leftPad(3, '0') + 'aaaAAAA';
+            }
+            accounts.add(acc);
+        }
+        if (insertRecords && byPassAllTriggers) {
+            Caller.byPassAllTriggers = true;
+            insert accounts;
+            Caller.byPassAllTriggers = false;
+        }
+        else if (insertRecords) {
+            insert accounts;
+        }
         return accounts;
     }
     

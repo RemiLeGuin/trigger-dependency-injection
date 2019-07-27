@@ -3,82 +3,114 @@ private class ParentAccountEmployeesUpdateTest {
     
     @IsTest
     private static void updateParentAccountEmployeesInsertTest() {
-        // Multiple of 4 as there are 4 test cases.
-        Integer numberOfAccounts = 240;
-        Integer firstQuarter = Integer.valueOf(numberOfAccounts * 0.25);
-        Integer secondQuarter = Integer.valueOf(numberOfAccounts * 0.5);
-        Integer thirdQuarter = Integer.valueOf(numberOfAccounts * 0.75);
+        Integer numberOfAccounts = 201;
+        Account grandParentAccount = AccountTestDataFactoryNoDml.getGrandParentAccounts(true, false, true, 1)[0];
+        List<Account> parentAccounts = AccountTestDataFactoryNoDml.getParentAccounts(true, false, true, numberOfAccounts);
+        List<Account> accountsWithEmployees = AccountTestDataFactoryNoDml.getAccountsWithEmployees(true, false, true, numberOfAccounts, 200);
+        List<Account> accountsToTest = AccountTestDataFactoryNoDml.getAccountsWithEmployees(false, false, false, numberOfAccounts, 100);
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            parentAccounts[i].ParentId = grandParentAccount.Id;
+            accountsWithEmployees[i].ParentId = parentAccounts[i].Id;
+            accountsToTest[i].ParentId = parentAccounts[i].Id;
+        }
+        Caller.byPassAllTriggers = true;
+        update parentAccounts;
+        update accountsWithEmployees;
+        Caller.byPassAllTriggers = false;
         
         Test.startTest();
-        AccountTestDataFactory.createAccountsWithParentAccount(numberOfAccounts);
+        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesInsert', 'UpdateParentAccountEmployeesUpdate' }, 'Account');
+        insert accountsToTest;
         Test.stopTest();
         
-        List<Account> parentAccounts = [SELECT NumberOfEmployees FROM Account WHERE ParentId = null ORDER BY Name ASC];
-        System.assertEquals(100, parentAccounts[0].NumberOfEmployees,
-                            'Parent account Number of Employees wrong or not set');
-        System.assertEquals(100, parentAccounts[firstQuarter].NumberOfEmployees,
-                            'Parent account Number of Employees wrong or not set');
-        System.assertEquals(100, parentAccounts[secondQuarter].NumberOfEmployees,
-                            'Parent account Number of Employees wrong or not set');
-        System.assertEquals(100, parentAccounts[thirdQuarter].NumberOfEmployees,
-                            'Parent account Number of Employees wrong or not set');
+        parentAccounts = [SELECT Id, NumberOfEmployees FROM Account WHERE Name LIKE 'Parent%' ORDER BY Name ASC];
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            System.assertEquals(300, parentAccounts[i].NumberOfEmployees, 'Wrong number of employees summarized on parent account');
+        }
+        grandParentAccount = [SELECT Id, NumberOfEmployees FROM Account WHERE Name LIKE 'GrandParent%' ORDER BY Name ASC];
+        System.assertEquals(numberOfAccounts * (200 + 100), grandParentAccount.NumberOfEmployees, 'Wrong number of employees summarized on grandparent account');
+    }
+
+    @IsTest
+    private static void updateParentAccountEmployeesUpdateTest() {
+        Integer numberOfAccounts = 201;
+        Account grandParentAccount = AccountTestDataFactoryNoDml.getGrandParentAccounts(true, false, true, 1)[0];
+        List<Account> parentAccounts = AccountTestDataFactoryNoDml.getParentAccounts(true, false, true, numberOfAccounts);
+        List<Account> accountsWithEmployees = AccountTestDataFactoryNoDml.getAccountsWithEmployees(true, false, true, numberOfAccounts, 200);
+        List<Account> accountsToTest = AccountTestDataFactoryNoDml.getAccountsWithEmployees(true, false, true, numberOfAccounts, 10);
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            parentAccounts[i].ParentId = grandParentAccount.Id;
+            accountsWithEmployees[i].ParentId = parentAccounts[i].Id;
+            accountsToTest[i].ParentId = parentAccounts[i].Id;
+        }
+        Caller.byPassAllTriggers = true;
+        update parentAccounts;
+        update accountsWithEmployees;
+        update accountsToTest;
+        Caller.byPassAllTriggers = false;
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            accountsToTest[i].NumberOfEmployees = 100;
+        }
+
+        Test.startTest();
+        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesUpdate' }, 'Account');
+        update accountsToTest;
+        Test.stopTest();
+
+        parentAccounts = [SELECT Id, NumberOfEmployees FROM Account WHERE Name LIKE 'Parent%' ORDER BY Name ASC];
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            System.assertEquals(300, parentAccounts[i].NumberOfEmployees, 'Wrong number of employees summarized on parent account');
+        }
+        grandParentAccount = [SELECT Id, NumberOfEmployees FROM Account WHERE Name LIKE 'GrandParent%' ORDER BY Name ASC];
+        System.assertEquals(numberOfAccounts * (200 + 100), grandParentAccount.NumberOfEmployees, 'Wrong number of employees summarized on grandparent account');
+    }
+
+    @IsTest
+    private static void updateParentAccountEmployeesDeleteTest() {
+        Integer numberOfAccounts = 201;
+        Account grandParentAccount = AccountTestDataFactoryNoDml.getGrandParentAccounts(true, false, true, 1)[0];
+        List<Account> parentAccounts = AccountTestDataFactoryNoDml.getParentAccounts(true, false, true, numberOfAccounts);
+        List<Account> accountsWithEmployees = AccountTestDataFactoryNoDml.getAccountsWithEmployees(true, false, true, numberOfAccounts, 200);
+        List<Account> accountsToTest = AccountTestDataFactoryNoDml.getAccountsWithEmployees(true, false, true, numberOfAccounts, 100);
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            parentAccounts[i].ParentId = grandParentAccount.Id;
+            accountsWithEmployees[i].ParentId = parentAccounts[i].Id;
+            accountsToTest[i].ParentId = parentAccounts[i].Id;
+        }
+        Caller.byPassAllTriggers = true;
+        update parentAccounts;
+        update accountsWithEmployees;
+        update accountsToTest;
+        Caller.byPassAllTriggers = false;
+
+        Test.startTest();
+        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesDelete', 'UpdateParentAccountEmployeesUpdate' }, 'Account');
+        delete accountsToTest;
+        Test.stopTest();
+
+        parentAccounts = [SELECT Id, NumberOfEmployees FROM Account WHERE Name LIKE 'Parent%' ORDER BY Name ASC];
+        for (Integer i = 0; i < numberOfAccounts; i++) {
+            System.assertEquals(200, parentAccounts[i].NumberOfEmployees, 'Wrong number of employees summarized on parent account');
+        }
+        grandParentAccount = [SELECT Id, NumberOfEmployees FROM Account WHERE Name LIKE 'GrandParent%' ORDER BY Name ASC];
+        System.assertEquals(numberOfAccounts * 200, grandParentAccount.NumberOfEmployees, 'Wrong number of employees summarized on grandparent account');
     }
     
     @IsTest
-    private static void updateParentAccountEmployeesUpdateTest() {
-        // Multiple of 4 as there are 4 test cases.
-        Integer numberOfAccounts = 240;
-        Integer firstQuarter = Integer.valueOf(numberOfAccounts * 0.25);
-        Integer secondQuarter = Integer.valueOf(numberOfAccounts * 0.5);
-        Integer thirdQuarter = Integer.valueOf(numberOfAccounts * 0.75);
-        Account grandparentAccount = AccountTestDataFactory.createAccounts(1)[0];
-        List<Account> parentAccounts = AccountTestDataFactory.createAccounts(numberOfAccounts);
-        List<Account> childAccounts = AccountTestDataFactory.createAccounts(numberOfAccounts);
-        for (Integer i = 0; i < firstQuarter; i++) {
-            childAccounts[i].Name = 'Child' + String.valueOf(i).leftPad(3, '0');
-            childAccounts[i].NumberOfEmployees = 100;
-            childAccounts[i].ParentId = parentAccounts[firstQuarter + i].Id;
-            parentAccounts[i].Name = 'Parent' + String.valueOf(i).leftPad(3, '0');
-            parentAccounts[i].ParentId = grandparentAccount.Id;
-        }
-        for (Integer i = firstQuarter; i < secondQuarter; i++) {
-            childAccounts[i].Name = 'Child' + String.valueOf(i).leftPad(3, '0');
-            childAccounts[i].NumberOfEmployees = 100;
-            childAccounts[i].ParentId = parentAccounts[i].Id;
-            parentAccounts[i].Name = 'Parent' + String.valueOf(i).leftPad(3, '0');
-            parentAccounts[i].ParentId = grandparentAccount.Id;
-        }
-        for (Integer i = secondQuarter; i < thirdQuarter; i++) {
-            childAccounts[i].Name = 'Child' + String.valueOf(i).leftPad(3, '0');
-            childAccounts[i].NumberOfEmployees = 100;
-            childAccounts[i].ParentId = parentAccounts[i].Id;
-            parentAccounts[i].Name = 'Parent' + String.valueOf(i).leftPad(3, '0');
-            parentAccounts[i].ParentId = grandparentAccount.Id;
-        }
-        for (Integer i = thirdQuarter; i < numberOfAccounts; i++) {
-            childAccounts[i].Name = 'Child' + String.valueOf(i).leftPad(3, '0');
-            childAccounts[i].ParentId = parentAccounts[i].Id;
-            parentAccounts[i].Name = 'Parent' + String.valueOf(i).leftPad(3, '0');
-            parentAccounts[i].ParentId = grandparentAccount.Id;
-        }
-        update parentAccounts;
+    private static void testNonImplementedMethod() {
+        String exceptionThrown;
         
         Test.startTest();
-        update childAccounts;
+        try {
+            Callable callableClass = (Callable)Type.forName('ParentAccountEmployeesUpdate').newInstance();
+            callableClass.call('nonImplementedMethod', new Map<String, Object>());
+        }
+        catch (Exception e) {
+            exceptionThrown = e.getMessage();
+        }
         Test.stopTest();
         
-        parentAccounts = [SELECT NumberOfEmployees FROM Account WHERE Name LIKE 'Parent%' ORDER BY Name ASC];
-        grandparentAccount = [SELECT NumberOfEmployees FROM Account WHERE ParentId = null LIMIT 1];
-        System.assertEquals(null, parentAccounts[0].NumberOfEmployees,
-                            'Parent account Number of Employees set while it shall not');
-        System.assertEquals(200, parentAccounts[firstQuarter].NumberOfEmployees,
-                            'Parent account Number of Employees wrong or not set');
-        System.assertEquals(100, parentAccounts[secondQuarter].NumberOfEmployees,
-                            'Parent account Number of Employees wrong or not set');
-        System.assertEquals(null, parentAccounts[thirdQuarter].NumberOfEmployees,
-                            'Parent account Number of Employees wrong or not set');
-        System.assertEquals(numberOfAccounts * 0.75 * 100, grandparentAccount.NumberOfEmployees,
-                            'Grandparent account Number of Employees wrong or not set');
+        System.assertEquals('Method not implemented', exceptionThrown, 'No exception thrown for method not implemented');
     }
     
 }
