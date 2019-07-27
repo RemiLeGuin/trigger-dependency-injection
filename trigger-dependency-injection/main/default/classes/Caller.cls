@@ -5,7 +5,7 @@
 */
 global without sharing class Caller {
     
-    @TestVisible private static String bypassedMethods;
+    private static String bypassedMethods;
     public static Boolean byPassAllTriggers = false;
 
     static {
@@ -130,11 +130,10 @@ global without sharing class Caller {
                 bypassedMethodsSet.add(method.DeveloperName);
             }
         }
-        String bypassedMethods = '';
+        bypassedMethods = '';
         if (!bypassedMethodsSet.isEmpty()) {
             bypassedMethods = String.join(bypassedMethodsSet, ';');
         }
-        Caller.bypassedMethods = bypassedMethods;
         return bypassedMethods;
     }
     
