@@ -11,9 +11,9 @@
         <valueSetDefinition>
             <sorted>false</sorted>
             <value>
-                <fullName>Test</fullName>
+                <fullName>CallerMockMockingMethod</fullName>
                 <default>false</default>
-                <label>Test</label>
+                <label>CallerMockMockingMethod</label>
             </value>
         </valueSetDefinition>
     </valueSet>
