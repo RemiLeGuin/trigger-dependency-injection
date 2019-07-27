@@ -89,10 +89,10 @@ You will see both packages installed in the org in *Setup -> Installed Packages*
 -   Uninstall the second package: Trigger Dependency Injection (TDI) Test in *Setup -> Installed Packages*.
 -   Create another Account with a Annual Revenue set to 200000. Its rating is not automatically set anymore. The functionality is properly removed (the APEX class and its corresponding custom metadata). Of course, the Account trigger remains in case of other use cases but you are free to include it the first or the second package.
 
-## Apex test coverage
+## Bypass Methods
 
 With the first package, a "BypassedMethods__c" field has been created on the "User" object. A "CallerMockMockingMethod" picklist value already exists, corresponding to a test method covering the "Caller" class from the core package.
-For the Apex test to work in the second package, add all the the handler methods from the second package. Set the custom metadata's API name as picklist values:
+If you want to bypass methods for specific users, set the custom metadata's API names as picklist values:
 - CheckAccountRatingDelete
 - UpdateAccountDescriptionUpdate
 - UpdateAccountRatingInsert
@@ -104,5 +104,3 @@ For the Apex test to work in the second package, add all the the handler methods
 - UpdateParentAccountRatingInsert
 - UpdateParentAccountRatingUndelete
 - UpdateParentAccountRatingUpdate
-
-Feel free to add the field on the User's page layout to set its values on a specific user: it allows to bypass the selected method for a specific user in "real-life" cases. Do not set it for the user running test classes.
