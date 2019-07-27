@@ -73,8 +73,8 @@ private class CallerTest {
     }
 
     @IsTest
-    private static void bypassAllExceptTestNonexistentgMethod() {
-        Caller.bypassAllExcept(new List<String> { 'NonexistentgMethod' }, null);
+    private static void bypassAllExceptTestNonexistentMethod() {
+        Caller.bypassAllExcept(new List<String> { 'NonexistentMethod' }, null);
     }
 
     @IsTest
