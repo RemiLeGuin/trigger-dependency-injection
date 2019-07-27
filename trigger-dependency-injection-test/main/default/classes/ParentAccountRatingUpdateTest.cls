@@ -4,9 +4,9 @@ private class ParentAccountRatingUpdateTest {
     @IsTest
     private static void updateParentAccountRatingInsertTest() {
         Integer numberOfAccounts = 201;
-        Account grandParentAccount = AccountTestDataFactoryNoDml.getGrandParentAccounts(true, false, true, 1)[0];
-        List<Account> parentAccounts = AccountTestDataFactoryNoDml.getParentAccounts(true, false, true, numberOfAccounts);
-        List<Account> accountsToTest = AccountTestDataFactoryNoDml.getAccountsWithRating(false, false, false, numberOfAccounts, 'Hot');
+        Account grandParentAccount = AccountTestDataFactory.getGrandParentAccounts(true, false, true, 1)[0];
+        List<Account> parentAccounts = AccountTestDataFactory.getParentAccounts(true, false, true, numberOfAccounts);
+        List<Account> accountsToTest = AccountTestDataFactory.getAccountsWithRating(false, false, false, numberOfAccounts, 'Hot');
         for (Integer i = 0; i < numberOfAccounts; i++) {
             grandParentAccount.Rating = 'Cold';
             parentAccounts[i].ParentId = grandParentAccount.Id;
@@ -33,9 +33,9 @@ private class ParentAccountRatingUpdateTest {
     @IsTest
     private static void updateParentAccountRatingUpdateTest() {
         Integer numberOfAccounts = 201;
-        Account grandParentAccount = AccountTestDataFactoryNoDml.getGrandParentAccounts(true, false, true, 1)[0];
-        List<Account> parentAccounts = AccountTestDataFactoryNoDml.getParentAccounts(true, false, true, numberOfAccounts);
-        List<Account> accountsToTest = AccountTestDataFactoryNoDml.getAccountsWithRating(true, false, true, numberOfAccounts, 'Cold');
+        Account grandParentAccount = AccountTestDataFactory.getGrandParentAccounts(true, false, true, 1)[0];
+        List<Account> parentAccounts = AccountTestDataFactory.getParentAccounts(true, false, true, numberOfAccounts);
+        List<Account> accountsToTest = AccountTestDataFactory.getAccountsWithRating(true, false, true, numberOfAccounts, 'Cold');
         for (Integer i = 0; i < numberOfAccounts; i++) {
             parentAccounts[i].ParentId = grandParentAccount.Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;
@@ -64,9 +64,9 @@ private class ParentAccountRatingUpdateTest {
     @IsTest
     private static void updateParentAccountRatingUndeleteTest() {
         Integer numberOfAccounts = 201;
-        Account grandParentAccount = AccountTestDataFactoryNoDml.getGrandParentAccounts(true, false, true, 1)[0];
-        List<Account> parentAccounts = AccountTestDataFactoryNoDml.getParentAccounts(true, false, true, numberOfAccounts);
-        List<Account> accountsToTest = AccountTestDataFactoryNoDml.getAccountsWithRating(true, false, true, numberOfAccounts, 'Cold');
+        Account grandParentAccount = AccountTestDataFactory.getGrandParentAccounts(true, false, true, 1)[0];
+        List<Account> parentAccounts = AccountTestDataFactory.getParentAccounts(true, false, true, numberOfAccounts);
+        List<Account> accountsToTest = AccountTestDataFactory.getAccountsWithRating(true, false, true, numberOfAccounts, 'Cold');
         for (Integer i = 0; i < numberOfAccounts; i++) {
             parentAccounts[i].ParentId = grandParentAccount.Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;

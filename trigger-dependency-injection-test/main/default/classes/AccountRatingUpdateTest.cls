@@ -3,7 +3,7 @@ private class AccountRatingUpdateTest {
     
     @IsTest
     private static void updateAccountRatingTestNull() {
-        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithAnnualRevenue(false, true, false, 200, null);
+        List<Account> accounts = AccountTestDataFactory.getAccountsWithAnnualRevenue(false, true, false, 200, null);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
@@ -19,7 +19,7 @@ private class AccountRatingUpdateTest {
     
     @IsTest
     private static void updateAccountRatingTestCold() {
-        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithAnnualRevenue(false, true, false, 200, 10000);
+        List<Account> accounts = AccountTestDataFactory.getAccountsWithAnnualRevenue(false, true, false, 200, 10000);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
@@ -36,7 +36,7 @@ private class AccountRatingUpdateTest {
     
     @IsTest
     private static void updateAccountRatingTestWarm() {
-        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithAnnualRevenue(false, true, false, 200, 800000);
+        List<Account> accounts = AccountTestDataFactory.getAccountsWithAnnualRevenue(false, true, false, 200, 800000);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
@@ -53,7 +53,7 @@ private class AccountRatingUpdateTest {
     
     @IsTest
     private static void updateAccountRatingTestHot() {
-        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithAnnualRevenue(false, true, false, 200, 1500000);
+        List<Account> accounts = AccountTestDataFactory.getAccountsWithAnnualRevenue(false, true, false, 200, 1500000);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
@@ -70,7 +70,7 @@ private class AccountRatingUpdateTest {
     
     @IsTest
     private static void updateAccountDescriptionTestNull() {
-        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating(false, true, false, 200, null);
+        List<Account> accounts = AccountTestDataFactory.getAccountsWithRating(false, true, false, 200, null);
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
@@ -86,7 +86,7 @@ private class AccountRatingUpdateTest {
     
     @IsTest
     private static void updateAccountDescriptionTestCold() {
-        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating(false, true, false, 200, 'Cold');
+        List<Account> accounts = AccountTestDataFactory.getAccountsWithRating(false, true, false, 200, 'Cold');
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
@@ -103,7 +103,7 @@ private class AccountRatingUpdateTest {
     
     @IsTest
     private static void updateAccountDescriptionTestWarm() {
-        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating(false, true, false, 200, 'Warm');
+        List<Account> accounts = AccountTestDataFactory.getAccountsWithRating(false, true, false, 200, 'Warm');
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
@@ -120,7 +120,7 @@ private class AccountRatingUpdateTest {
     
     @IsTest
     private static void updateAccountDescriptionTestHot() {
-        List<Account> accounts = AccountTestDataFactoryNoDml.getAccountsWithRating(false, true, false, 200, 'Hot');
+        List<Account> accounts = AccountTestDataFactory.getAccountsWithRating(false, true, false, 200, 'Hot');
         Map<String, Object> parameters = new Map<String, Object> {
             'parameter1' => accounts,
             'parameter2' => null
