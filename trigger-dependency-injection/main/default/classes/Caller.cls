@@ -110,6 +110,12 @@ global without sharing class Caller {
         }
     }
 
+    /**
+    * @description Allows to bypass all handler methods registered in the HandlerMethod__mdt custom metadata except for those informed.
+    * @param methodsToExecute API name of the custom metadatas mentionning the handler methods to execute.
+    * @param callingTrigger Object's API name if the bypass shall only concern handler methods called from specific triggers.
+    * @return A list of bypassed handler methods in a string semi-colon separated.
+    */
     global static String bypassAllExcept(List<String> methodsToExecute, String callingTrigger) {
         List<HandlerMethod__mdt> methods;
         if (String.isBlank(callingTrigger)) {
