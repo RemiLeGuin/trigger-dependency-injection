@@ -45,6 +45,21 @@ trigger AccountBeforeInsert on Account (before insert) {
 }
 ```
 
+-   You also may take the opportunity to check permission at object level in the trigger:
+
+```
+trigger AccountBeforeDelete on Account (before delete) {
+    if (Schema.SObjectType.Account.isDeletable()) {
+        Caller.callHandlers('Account', 'before', 'delete');
+    }
+    else {
+        for (SObject record : Trigger.old) {
+            record.addError('You are not allowed to delete accounts.');
+        }
+    }
+}
+```
+
 ## Step 3: Install the trigger-dependency-injection-test directory as an unlocked package to test a new functionnality that uses the defined previous trigger
 
 -   Install the trigger-dependency-injection-test directory as an unlocked package:
