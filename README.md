@@ -14,18 +14,8 @@ To learn how to manipulate unlocked packages, please review [the following Trail
 
 ## Step 1: Install the trigger-dependency-injection directory as an unlocked package in an org
 
--   Clone the [TriggerDependencyInjection](https://github.com/RemiLeGuin/TriggerDependencyInjection) repository to your local machine.
--   Connect to a default org (Sandbox, Trailhead Playground, Scratch Org...) with Dev Hub and Unlocked Packages enabled.
--   Install the trigger-dependency-injection directory as an unlocked package:
-```
-sfdx force:package:create --name "Trigger Dependency Injection (TDI)" --description "Framework injecting dependencies between Apex Triggers and handler classes they call at runtime." --packagetype Unlocked --path trigger-dependency-injection --nonamespace --targetdevhubusername /*targeted org or username*/
-```
-```
-sfdx force:package:version:create --package "Trigger Dependency Injection (TDI)" --path trigger-dependency-injection --installationkey /*password*/ --wait 10 --targetdevhubusername /*targeted org or username*/
-```
-```
-sfdx force:package:install --wait 10 --publishwait 10 --package "Trigger Dependency Injection (TDI)@0.1.0-1" --installationkey /*password*/ --noprompt --targetusername /*targeted org or username*/
-```
+-   [Follow this link for sandboxes](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG "Follow this link for sandboxes")
+-   [Follow this link for Production environments, Developer Editions and Trailhead Playgrounds](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG "Follow this link for Production environments, Developer Editions and Trailhead Playgrounds")
 
 ## Step 2: Create generic triggers to handle all actions on a SObject
 
@@ -62,46 +52,15 @@ trigger AccountBeforeDelete on Account (before delete) {
 
 ## Step 3: Install the trigger-dependency-injection-test directory as an unlocked package to test a new functionnality that uses the defined previous trigger
 
--   Install the trigger-dependency-injection-test directory as an unlocked package:
-```
-sfdx force:package:create --name "Trigger Dependency Injection (TDI) Test" --description "Test package for the Trigger Dependency Injection (TDI) unlocked package." --packagetype Unlocked --path trigger-dependency-injection-test --nonamespace --targetdevhubusername /*targeted org or username*/
-```
--   In sfdx-project.json, add the dependency of the second package to the first one:
-```
-{
-  "path": "trigger-dependency-injection-test",
-  "package": "Trigger Dependency Injection (TDI) Test",
-  "versionName": "ver 0.1",
-  "versionNumber": "0.1.0.NEXT",
-  "default": false,
-  "dependencies": [
-    {
-      "package": "Trigger Dependency Injection (TDI)",
-      "versionNumber": "0.1.0.LATEST"
-    }
-  ]
-}
-```
-Otherwise, you will not be able to install the second package containing a custom metadata which needs the custom metadata type in the first package.
--   Then, proceed with versioning and installing the second package:
-```
-sfdx force:package:version:create --package "Trigger Dependency Injection (TDI) Test" --path trigger-dependency-injection-test --installationkey /*password*/ --wait 10 --targetdevhubusername /*targeted org or username*/
-```
-```
-sfdx force:package:install --wait 10 --publishwait 10 --package "Trigger Dependency Injection (TDI) Test@0.1.0-1" --installationkey /*password*/ --noprompt --targetusername /*targeted org or username*/
-```
+-   [Follow this link for sandboxes](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG "Follow this link for sandboxes")
+-   [Follow this link for Production environments, Developer Editions and Trailhead Playgrounds](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG "Follow this link for Production environments, Developer Editions and Trailhead Playgrounds")
 
 ## Test it yourself!
-> IMPORTANT: To test the functionality with a user other than 'System Administrator', do not forget to assign the permission sets to the desired users from other profiles with the following command lines after the packages installation:
-```
-sfdx force:user:permset:assign --permsetname TriggerDependencyInjection --onbehalfof /*username1@my.org, username2@my.org, username3@my.org ...*/
-```
-```
-sfdx force:user:permset:assign --permsetname ManageAccountRating --onbehalfof /*username1@my.org, username2@my.org, username3@my.org ...*/
-```
-You will see both packages installed in the org in *Setup -> Installed Packages*. You can test the functionality that way:
+> IMPORTANT: To test the functionality with a user other than 'System Administrator', do not forget to assign the permission sets to the desired users from other profiles.
+
+You can see both packages installed in the org in *Setup &rightarrow; Installed Packages*. You can test the functionality that way:
 -   Create an Account with a Annual Revenue set to 200000. Its rating is automatically set to 'Cold'. That is the purpose of the functionality.
--   Uninstall the second package: Trigger Dependency Injection (TDI) Test in *Setup -> Installed Packages*.
+-   Uninstall the second package: Trigger Dependency Injection (TDI) Test in *Setup &rightarrow; Installed Packages*.
 -   Create another Account with a Annual Revenue set to 200000. Its rating is not automatically set anymore. The functionality is properly removed (the APEX class and its corresponding custom metadata). Of course, the Account trigger remains in case of other use cases but you are free to include it the first or the second package.
 
 ## Bypass Methods

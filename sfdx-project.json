@@ -2,14 +2,32 @@
     "packageDirectories": [
         {
             "path": "trigger-dependency-injection",
-            "default": true
+            "default": true,
+            "package": "Trigger Dependency Injection (TDI)",
+            "versionName": "ver 1.0",
+            "versionNumber": "1.0.0.NEXT"
         },
         {
             "path": "trigger-dependency-injection-test",
-            "default": false
+            "default": false,
+            "package": "Trigger Dependency Injection (TDI) Test",
+            "versionName": "ver 1.0",
+            "versionNumber": "1.0.0.NEXT",
+            "dependencies": [
+                {
+                    "package": "Trigger Dependency Injection (TDI)",
+                    "versionNumber": "1.0.0.LATEST"
+                }
+            ]
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "48.0"
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "Trigger Dependency Injection (TDI)": "0Ho3X000000XZFWSA4",
+        "Trigger Dependency Injection (TDI)@1.0.0-1": "04t3X000002VVdhQAG",
+        "Trigger Dependency Injection (TDI) Test": "0Ho3X000000XZFbSAO",
+        "Trigger Dependency Injection (TDI) Test@1.0.0-1": "04t3X000002VVm2QAG"
+    }
 }
