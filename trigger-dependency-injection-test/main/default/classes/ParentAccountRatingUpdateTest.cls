@@ -12,13 +12,13 @@ private class ParentAccountRatingUpdateTest {
             parentAccounts[i].ParentId = grandParentAccount.Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;
         }
-        Caller.byPassAllTriggers = true;
+        TDI_Caller.byPassAllTriggers = true;
         update grandParentAccount;
         update parentAccounts;
-        Caller.byPassAllTriggers = false;
+        TDI_Caller.byPassAllTriggers = false;
         
         Test.startTest();
-        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountRatingInsert', 'UpdateParentAccountRatingUpdate' }, 'Account');
+        TDI_Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountRatingInsert', 'UpdateParentAccountRatingUpdate' }, 'Account');
         insert accountsToTest;
         Test.stopTest();
         
@@ -40,16 +40,16 @@ private class ParentAccountRatingUpdateTest {
             parentAccounts[i].ParentId = grandParentAccount.Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;
         }
-        Caller.byPassAllTriggers = true;
+        TDI_Caller.byPassAllTriggers = true;
         update parentAccounts;
         update accountsToTest;
-        Caller.byPassAllTriggers = false;
+        TDI_Caller.byPassAllTriggers = false;
         for (Integer i = 0; i < numberOfAccounts; i++) {
             accountsToTest[i].Rating = 'Warm';
         }
         
         Test.startTest();
-        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountRatingUpdate' }, 'Account');
+        TDI_Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountRatingUpdate' }, 'Account');
         update accountsToTest;
         Test.stopTest();
         
@@ -71,17 +71,17 @@ private class ParentAccountRatingUpdateTest {
             parentAccounts[i].ParentId = grandParentAccount.Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;
         }
-        Caller.byPassAllTriggers = true;
+        TDI_Caller.byPassAllTriggers = true;
         update accountsToTest;
         delete accountsToTest;
         for (Integer i = 0; i < numberOfAccounts; i++) {
             parentAccounts[i].Rating = null;
         }
         update parentAccounts;
-        Caller.byPassAllTriggers = false;
+        TDI_Caller.byPassAllTriggers = false;
 
         Test.startTest();
-        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountRatingUndelete', 'UpdateParentAccountRatingUpdate' }, 'Account');
+        TDI_Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountRatingUndelete', 'UpdateParentAccountRatingUpdate' }, 'Account');
         undelete accountsToTest;
         Test.stopTest();
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TDI_Test</fullName>
+    <columns>MasterLabel</columns>
+    <columns>TDI_ClassName__c</columns>
+    <columns>TDI_MethodName__c</columns>
+    <columns>TDI_CallingTrigger__c</columns>
+    <columns>TDI_Moment__c</columns>
+    <columns>TDI_Operation__c</columns>
+    <columns>TDI_Parameter1__c</columns>
+    <columns>TDI_Parameter2__c</columns>
+    <columns>TDI_IndexOfExecution__c</columns>
+    <columns>TDI_Active__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>TDI_CallingTrigger__c</field>
+        <operation>equals</operation>
+        <value>Test</value>
+    </filters>
+    <label>TDI Test</label>
+</ListView>

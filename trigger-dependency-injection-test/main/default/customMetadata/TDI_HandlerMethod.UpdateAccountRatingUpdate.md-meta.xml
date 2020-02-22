@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>UpdateAccountRatingUpdate</label>
+    <protected>false</protected>
+    <values>
+        <field>TDI_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>TDI_CallingTrigger__c</field>
+        <value xsi:type="xsd:string">Account</value>
+    </values>
+    <values>
+        <field>TDI_ClassName__c</field>
+        <value xsi:type="xsd:string">AccountRatingUpdate</value>
+    </values>
+    <values>
+        <field>TDI_Description__c</field>
+        <value xsi:type="xsd:string">As a standard user, when I insert an Account filling its Annual Revenue or update an Account&#39;s Annual Revenue, the Account Rating is set as follow:
+- Annual Revenue null -&gt; Rating null
+- Annual Revenue &lt; 500,000 -&gt; Rating &#39;Cold&#39;
+- Annual Revenue between 500,000 and 1,000,000 -&gt; Rating &#39;Warm&#39;
+- Annual Revenue &gt; 1,000,000 -&gt; Rating &#39;Hot&#39;</value>
+    </values>
+    <values>
+        <field>TDI_IndexOfExecution__c</field>
+        <value xsi:type="xsd:double">1.0</value>
+    </values>
+    <values>
+        <field>TDI_MethodName__c</field>
+        <value xsi:type="xsd:string">updateAccountRating</value>
+    </values>
+    <values>
+        <field>TDI_Moment__c</field>
+        <value xsi:type="xsd:string">before</value>
+    </values>
+    <values>
+        <field>TDI_Operation__c</field>
+        <value xsi:type="xsd:string">update</value>
+    </values>
+    <values>
+        <field>TDI_Parameter1__c</field>
+        <value xsi:type="xsd:string">Trigger.new</value>
+    </values>
+    <values>
+        <field>TDI_Parameter2__c</field>
+        <value xsi:type="xsd:string">None</value>
+    </values>
+</CustomMetadata>

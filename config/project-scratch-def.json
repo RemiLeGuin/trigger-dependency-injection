@@ -1,11 +1,5 @@
 {
     "orgName": "Trigger Dependency Injection",
     "edition": "Developer",
-    "features": [],
-    "settings": {
-        "lightningExperienceSettings": {
-            "enableS1DesktopEnabled": true
-        }
-    }
+    "features": []
 }
-  

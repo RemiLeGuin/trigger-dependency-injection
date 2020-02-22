@@ -11,9 +11,9 @@ public class AccountTestDataFactory {
             accounts.add(acc);
         }
         if (insertRecords && byPassAllTriggers) {
-            Caller.byPassAllTriggers = true;
+            TDI_Caller.byPassAllTriggers = true;
             insert accounts;
-            Caller.byPassAllTriggers = false;
+            TDI_Caller.byPassAllTriggers = false;
         }
         else if (insertRecords) {
             insert accounts;
@@ -31,9 +31,9 @@ public class AccountTestDataFactory {
             accounts.add(acc);
         }
         if (insertRecords && byPassAllTriggers) {
-            Caller.byPassAllTriggers = true;
+            TDI_Caller.byPassAllTriggers = true;
             insert accounts;
-            Caller.byPassAllTriggers = false;
+            TDI_Caller.byPassAllTriggers = false;
         }
         else if (insertRecords) {
             insert accounts;
@@ -51,9 +51,9 @@ public class AccountTestDataFactory {
             accounts.add(acc);
         }
         if (insertRecords && byPassAllTriggers) {
-            Caller.byPassAllTriggers = true;
+            TDI_Caller.byPassAllTriggers = true;
             insert accounts;
-            Caller.byPassAllTriggers = false;
+            TDI_Caller.byPassAllTriggers = false;
         }
         else if (insertRecords) {
             insert accounts;
@@ -71,9 +71,9 @@ public class AccountTestDataFactory {
             accounts.add(acc);
         }
         if (insertRecords && byPassAllTriggers) {
-            Caller.byPassAllTriggers = true;
+            TDI_Caller.byPassAllTriggers = true;
             insert accounts;
-            Caller.byPassAllTriggers = false;
+            TDI_Caller.byPassAllTriggers = false;
         }
         else if (insertRecords) {
             insert accounts;
@@ -91,9 +91,9 @@ public class AccountTestDataFactory {
             accounts.add(acc);
         }
         if (insertRecords && byPassAllTriggers) {
-            Caller.byPassAllTriggers = true;
+            TDI_Caller.byPassAllTriggers = true;
             insert accounts;
-            Caller.byPassAllTriggers = false;
+            TDI_Caller.byPassAllTriggers = false;
         }
         else if (insertRecords) {
             insert accounts;
@@ -111,9 +111,9 @@ public class AccountTestDataFactory {
             accounts.add(acc);
         }
         if (insertRecords && byPassAllTriggers) {
-            Caller.byPassAllTriggers = true;
+            TDI_Caller.byPassAllTriggers = true;
             insert accounts;
-            Caller.byPassAllTriggers = false;
+            TDI_Caller.byPassAllTriggers = false;
         }
         else if (insertRecords) {
             insert accounts;

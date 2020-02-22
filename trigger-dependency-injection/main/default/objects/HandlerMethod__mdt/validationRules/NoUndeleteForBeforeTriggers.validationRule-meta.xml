@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>NoUndeleteForBeforeTriggers</fullName>
-    <active>true</active>
-    <description>Prevent setting &#39;undelete&#39; operation in &#39;after&#39; context.</description>
-    <errorConditionFormula>ISPICKVAL(Moment__c, &#39;before&#39;) &amp;&amp; ISPICKVAL(Operation__c, &#39;undelete&#39;)</errorConditionFormula>
-    <errorDisplayField>Operation__c</errorDisplayField>
-    <errorMessage>&#39;undelete&#39; operation only works in &#39;after&#39; context.</errorMessage>
-</ValidationRule>

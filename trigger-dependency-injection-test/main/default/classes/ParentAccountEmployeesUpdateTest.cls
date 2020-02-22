@@ -13,13 +13,13 @@ private class ParentAccountEmployeesUpdateTest {
             accountsWithEmployees[i].ParentId = parentAccounts[i].Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;
         }
-        Caller.byPassAllTriggers = true;
+        TDI_Caller.byPassAllTriggers = true;
         update parentAccounts;
         update accountsWithEmployees;
-        Caller.byPassAllTriggers = false;
+        TDI_Caller.byPassAllTriggers = false;
         
         Test.startTest();
-        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesInsert', 'UpdateParentAccountEmployeesUpdate' }, 'Account');
+        TDI_Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesInsert', 'UpdateParentAccountEmployeesUpdate' }, 'Account');
         insert accountsToTest;
         Test.stopTest();
         
@@ -43,17 +43,17 @@ private class ParentAccountEmployeesUpdateTest {
             accountsWithEmployees[i].ParentId = parentAccounts[i].Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;
         }
-        Caller.byPassAllTriggers = true;
+        TDI_Caller.byPassAllTriggers = true;
         update parentAccounts;
         update accountsWithEmployees;
         update accountsToTest;
-        Caller.byPassAllTriggers = false;
+        TDI_Caller.byPassAllTriggers = false;
         for (Integer i = 0; i < numberOfAccounts; i++) {
             accountsToTest[i].NumberOfEmployees = 100;
         }
 
         Test.startTest();
-        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesUpdate' }, 'Account');
+        TDI_Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesUpdate' }, 'Account');
         update accountsToTest;
         Test.stopTest();
 
@@ -77,14 +77,14 @@ private class ParentAccountEmployeesUpdateTest {
             accountsWithEmployees[i].ParentId = parentAccounts[i].Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;
         }
-        Caller.byPassAllTriggers = true;
+        TDI_Caller.byPassAllTriggers = true;
         update parentAccounts;
         update accountsWithEmployees;
         update accountsToTest;
-        Caller.byPassAllTriggers = false;
+        TDI_Caller.byPassAllTriggers = false;
 
         Test.startTest();
-        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesDelete', 'UpdateParentAccountEmployeesUpdate' }, 'Account');
+        TDI_Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesDelete', 'UpdateParentAccountEmployeesUpdate' }, 'Account');
         delete accountsToTest;
         Test.stopTest();
 
@@ -108,7 +108,7 @@ private class ParentAccountEmployeesUpdateTest {
             accountsWithEmployees[i].ParentId = parentAccounts[i].Id;
             accountsToTest[i].ParentId = parentAccounts[i].Id;
         }
-        Caller.byPassAllTriggers = true;
+        TDI_Caller.byPassAllTriggers = true;
         update accountsToTest;
         update accountsWithEmployees;
         delete accountsToTest;
@@ -116,10 +116,10 @@ private class ParentAccountEmployeesUpdateTest {
             parentAccounts[i].NumberOfEmployees = null;
         }
         update parentAccounts;
-        Caller.byPassAllTriggers = false;
+        TDI_Caller.byPassAllTriggers = false;
 
         Test.startTest();
-        Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesUndelete', 'UpdateParentAccountEmployeesUpdate' }, 'Account');
+        TDI_Caller.bypassAllExcept(new List<String> { 'UpdateParentAccountEmployeesUndelete', 'UpdateParentAccountEmployeesUpdate' }, 'Account');
         undelete accountsToTest;
         Test.stopTest();
 
