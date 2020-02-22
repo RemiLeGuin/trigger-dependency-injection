@@ -14,8 +14,8 @@ To learn how to manipulate unlocked packages, please review [the following Trail
 
 ## Step 1: Install the trigger-dependency-injection directory as an unlocked package in an org
 
--   [Follow this link for sandboxes](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG "Follow this link for sandboxes")
--   [Follow this link for Production environments, Developer Editions and Trailhead Playgrounds](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG "Follow this link for Production environments, Developer Editions and Trailhead Playgrounds")
+-   [Follow this link for Sandboxes](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG "https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG")
+-   [Follow this link for Production environments, Developer Editions and Trailhead Playgrounds](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG "https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG")
 
 ## Step 2 (for demo purpose only): Create generic triggers to handle all actions on a SObject
 
@@ -52,8 +52,8 @@ trigger AccountBeforeDelete on Account (before delete) {
 
 ## Step 3 (for demo purpose only): Install the trigger-dependency-injection-test directory as an unlocked package to test a new functionnality that uses the defined previous trigger
 
--   [Follow this link for sandboxes](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG "Follow this link for sandboxes")
--   [Follow this link for Production environments, Developer Editions and Trailhead Playgrounds](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG "Follow this link for Production environments, Developer Editions and Trailhead Playgrounds")
+-   [Follow this link for Sandboxes](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG "https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG")
+-   [Follow this link for Production environments, Developer Editions and Trailhead Playgrounds](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG "https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG")
 
 ## Test it yourself!
 > IMPORTANT: To test the functionality with a user other than 'System Administrator', do not forget to assign the permission sets to the desired users from other profiles.
