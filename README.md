@@ -17,7 +17,7 @@ To learn how to manipulate unlocked packages, please review [the following Trail
 -   [Follow this link for sandboxes](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG "Follow this link for sandboxes")
 -   [Follow this link for Production environments, Developer Editions and Trailhead Playgrounds](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVdhQAG "Follow this link for Production environments, Developer Editions and Trailhead Playgrounds")
 
-## Step 2: Create generic triggers to handle all actions on a SObject
+## Step 2 (for demo purpose only): Create generic triggers to handle all actions on a SObject
 
 -   Create triggers for each event and operation on the Account SObject:
     -   AccountBeforeInsert
@@ -50,7 +50,7 @@ trigger AccountBeforeDelete on Account (before delete) {
 }
 ```
 
-## Step 3: Install the trigger-dependency-injection-test directory as an unlocked package to test a new functionnality that uses the defined previous trigger
+## Step 3 (for demo purpose only): Install the trigger-dependency-injection-test directory as an unlocked package to test a new functionnality that uses the defined previous trigger
 
 -   [Follow this link for sandboxes](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG "Follow this link for sandboxes")
 -   [Follow this link for Production environments, Developer Editions and Trailhead Playgrounds](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3X000002VVm2QAG "Follow this link for Production environments, Developer Editions and Trailhead Playgrounds")
@@ -66,7 +66,7 @@ You can see both packages installed in the org in *Setup &rightarrow; Installed 
 ## Bypass Methods
 
 With the first package, a "BypassedMethods__c" field has been created on the "User" object. A "CallerMockMockingMethod" picklist value already exists, corresponding to a test method covering the "Caller" class from the core package.
-If you want to bypass methods for specific users, set the custom metadata's API names as picklist values:
+If you want to bypass methods for specific users, set the custom metadata's API names as picklist values. For instance, according to the test package:
 - CheckAccountRatingDelete
 - UpdateAccountDescriptionUpdate
 - UpdateAccountRatingInsert
